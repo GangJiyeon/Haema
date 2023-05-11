@@ -1,0 +1,204 @@
+<!--#include virtual = "/inc/dbconfig.asp"--> 
+<!DOCTYPE html>
+<!--[if IE 9 ]><html class="ie9"><![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>해마여행사</title>
+
+        <!-- Vendor CSS -->
+        <link href="{{ url_for('static', filename='vendors/bower_components/animate.css/animate.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='vendors/bower_components/google-material-color/dist/palette.css') }}" rel="stylesheet">
+            
+        <!-- CSS -->
+        <link href="{{ url_for('static', filename='css/app.min.1.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='css/app.min.2.css') }}" rel="stylesheet">
+
+        <link href="{{ url_for('static', filename='css/common/css/reset.css') }}" rel="stylesheet"> 
+        <link href="{{ url_for('static', filename='css/common/css/fonts.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/insert.css') }}" >
+
+        <script src="{{ url_for('static', filename='css/common/plugins/jQuery/jquery-3.6.0.min.js') }}" ></script>
+
+    </head>
+
+    <body data-ma-header="teal">
+        {% include './inc/header.html' %}
+        <section id="main">
+            {% include './inc/aside.html' %}
+            <section id="content">
+                <div class="container">
+                    <div class="card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px;">
+                            <div class="c-header" style="padding: 0;">
+                                <h2 style="color: #333;">※ 각 <span style="color: red;">관리자 페이지</span>에서 등록한 사용자를 조회합니다.</h2>
+                            </div> 
+                           
+                            <div>
+                                <input type="text" id="search_item" style="line-height: 25px; font-size: 13px; margin-right: 5px; width: 240px;" 
+                                placeholder="검색할 관리자명/아이디를 입력하세요. ">
+
+                                <button id="search_btn" style="width: 100px; line-height: 25px; margin-right: 10px; background-color: #467FCF; border-radius: 5px;
+                                border: 1px solid #467FCF; color: white; margin-left: 10px;">검색</button>
+
+                                <button id="initialize-btn" style="width: 100px; line-height: 25px; border-radius: 5px; border: 1px;">초기화</button>
+
+                                <button id="" style="width: 100px; line-height: 25px; margin-left: 10px; border-radius: 5px; border: 1px;">
+                                    <a href="http://localhost:8080/member/insert" target="" class="btn_menu iframe">등록</a>
+                                </button>
+
+                            </div>
+                        </div>
+                        
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: center;">아이디</th>
+                                        <th style="text-align: center;">비밀번호</th>
+                                        <th style="text-align: center; ">직책</th>
+                                        <th style="text-align: center; ">관리자명</th>
+                                        <th style="text-align: center;">수정/삭제</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody">
+                                    {% for item in member_list %}
+                                    <tr>
+                                        <td style="vertical-align: middle; text-align: center;">{{ item.user_id }}</td>
+                                        <td style="vertical-align: middle; text-align: center;">{{ item.user_pw }}</td>
+                                        <td style="vertical-align: middle; text-align: center;">{{ item.user_name}}</td>
+                                        <td style="vertical-align: middle; text-align: center;">{{ item.user_postion}}</td>
+                                        <td style='display: flex; vertical-align:middle; justify-content: center;'>
+                                            <button class="btn btn-primary btn-sm update-memberItem-btn"  style="margin-right:10px; " data-id="{{ item.user_id }}">수정</button>
+                                            <button class="btn btn-danger btn-sm delete-memberItem-btn" data-id="{{ item.user_id }}">삭제</button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <nav class="pagination-container" style="text-align: center; padding-bottom: 30px;">
+                            
+                            {% if page_no|int != 1 %}
+                                <button class="pagination-button" id="prev-button" title="Previous page" aria-label="Previous page">&lt;</button>	
+                            {% endif %}	
+
+                            {% for i in range(pgn) %}	 
+                                {% if i+1 == page_no|int %}
+                                    <a href="/member?page_no={{ i+1 }}">{{ i+1 }}</a>
+                                {% else %}
+                                    <a href="/member?page_no={{ i+1 }}" style="color: #333;">{{ i+1 }}</a>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if page_no|int != pgn %}
+                                <button class="pagination-button" id="next-button" title="Next page" aria-label="Next page">&gt;</button>
+                            {% endif %}	
+
+                        </nav>
+                        <script>
+                            $("#prev-button").on("click", function(){
+                                location.href = "/member?page_no={{ page_no|int -1 }}"
+                            })
+                            $("#next-button").on("click", function(){
+                                location.href = "/member?page_no={{ page_no|int +1 }}"
+                            })
+                        </script>
+                    </div> 
+                </div>
+            </section>
+
+            {% include './inc/footer.html' %}
+        </section>
+
+        <!-- Page Loader -->
+        <div class="page-loader palette-Teal bg">
+            <div class="preloader pl-xl pls-white">
+             <!--    <svg class="pl-circular" viewBox="25 25 50 50">
+                    <circle class="plc-path" cx="50" cy="50" r="20"/>
+                </svg> -->
+            </div>
+        </div>
+
+     
+        
+        
+        <!-- Javascript Libraries -->
+        <script src="{{ url_for('static', filename='vendors/bower_components/jquery/dist/jquery.min.js') }}" > </script>        
+        <script src="{{ url_for('static', filename='vendors/bower_components/bootstrap/dist/js/bootstrap.min.js') }}" > </script>        
+        <script src="{{ url_for('static', filename='vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js') }}" > </script>
+        <script src="{{ url_for('static', filename='vendors/bower_components/Waves/dist/waves.min.js') }}" > </script>
+        <script src="{{ url_for('static', filename='vendors/bootstrap-growl/bootstrap-growl.min.js') }}" > </script>
+
+        <!-- Placeholder for IE9 -->
+        <!--[if IE 9 ]>
+            <script src="vendors/bower_components/jquery-placeholder/jquery.placeholder.min.js"></script>
+        <![endif]-->
+        
+
+        
+        <script src="https://kit.fontawesome.com/70c929d7d4.js" crossorigin="anonymous"></script>
+        <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" /> 
+        <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script> 
+        
+        <script src="{{ url_for('static', filename='js/common/functions.js') }}" > </script>
+        <script src="{{ url_for('static', filename='js/common/actions.js') }}" > </script>
+        <script src="{{ url_for('static', filename='js/common/demo.js') }}" > </script>
+        <script src="{{ url_for('static', filename='js/common/common_include.js') }}" > </script>
+        <script src="{{ url_for('static', filename='js/common/login_check.js') }}" > </script>
+
+
+        <script src="{{ url_for('static', filename='js/business/api_businesses.js') }}" > </script>
+        <script src="{{ url_for('static', filename='js/member/member_list.js') }}" > </script>
+
+       
+    </body>
+</html>
+    <!-- Older IE warning message -->
+    <!--[if lt IE 9]>
+        <div class="ie-warning">
+            <h1 class="c-white">Warning!!</h1>
+            <p>You are using an outdated version of Internet Explorer, please upgrade <br/>to any of the following web browsers to access this website.</p>
+            <div class="iew-container">
+                <ul class="iew-download">
+                    <li>
+                        <a href="http://www.google.com/chrome/">
+                            <img src="img/browsers/chrome.png" alt="">
+                            <div>Chrome</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.mozilla.org/en-US/firefox/new/">
+                            <img src="img/browsers/firefox.png" alt="">
+                            <div>Firefox</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://www.opera.com">
+                            <img src="img/browsers/opera.png" alt="">
+                            <div>Opera</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.apple.com/safari/">
+                            <img src="img/browsers/safari.png" alt="">
+                            <div>Safari</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">
+                            <img src="img/browsers/ie.png" alt="">
+                            <div>IE (New)</div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <p>Sorry for the inconvenience!</p>
+        </div>   
+    <![endif]-->
