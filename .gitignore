@@ -18,6 +18,8 @@ static/js/page*
 static/js/html*
 static/js/init.js
 
+py/db/config.py
+
 py/__pycache__/
 
 ! static/js/common/
