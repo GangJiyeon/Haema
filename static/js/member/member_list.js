@@ -1,7 +1,9 @@
 $(document).ready(function() {
     //getMemberListData();
+    member_list_js.bind();
 
     $("#search_btn").off().on("click", function(){
+
         if ($("#search_item").val() == ""){
             alert("검색할 관리자명이나 아이디를 입력하십시오");
             $("#user_id").focus();
@@ -20,9 +22,12 @@ $(document).ready(function() {
                 if(res == "" || res == null || res == "null"){
                     alert("등록되지 않은 사용자입니다. ");
                     $("#user_id").val(Id);
+                    location.reload();
+
                     return;
                 }else{
                     $("#tbody > tr").remove();
+                    $(".pagination-container").remove();
                     insertTbody(res);
                     return;
                 }
@@ -53,7 +58,6 @@ let member_list_js = {
 
         $(".update-memberItem-btn").off().on("click", function() { //아이템 수정
             let user_id = $(this).data("id");
-            alert(user_id)
             
             window.location.href="/member/update?user_id="+user_id;
         });

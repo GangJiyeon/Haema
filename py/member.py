@@ -122,11 +122,11 @@ def logout():
 
 
 # 사용자 정보 조회
-def select_member_list(page_no):
-    query = "SELECT * FROM user_account WHERE account_state = %s ORDER BY user_id ASC OFFSET %s ROWS FETCH NEXT 10 ROWS ONLY"
+def select_member_list(page_no, count):
+    query = "SELECT * FROM user_account WHERE account_state = %s ORDER BY user_id ASC OFFSET %s ROWS FETCH NEXT %s ROWS ONLY"
     conn = dbconnect()
     cursor = conn.cursor()
-    cursor.execute(query, ("1", page_no-1))
+    cursor.execute(query, ("1", page_no-1, count))
     array = []
     row = cursor.fetchone()
 

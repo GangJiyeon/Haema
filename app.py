@@ -63,15 +63,23 @@ def logout():
 @app.route("/member")
 def view_member():
     # 페이지네이션 
-    pgn = member.count_member_list()
-    pgn = (pgn-1)//10 + 1 
+    total = member.count_member_list() #11
+    pgn = (total-1)//10 + 1 #2
 
-    page_no = request.args.get('page_no')
+    if(request.args.get('page_no') == None):
+        page_no = 1
+    else:
+        page_no = int(request.args.get('page_no'))
+
+    count = 10
+
+    if(page_no == 1):
+        count = total % 10 
 
     # 사용자 리스트
-    member_list = member.select_member_list(int(page_no))
+    member_list = member.select_member_list(int(page_no), count)
 
-    return render_template('member/member.html', pgn = pgn, member_list = member_list, page_no = page_no)
+    return render_template('member/member.html', pgn = pgn, member_list = member_list, page_no = page_no, info = "/member")
 
 # 사용자 등록 페이지
 @app.route("/member/insert")

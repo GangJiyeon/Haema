@@ -59,6 +59,7 @@
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
+                                        <th style="text-align: center;">번호</th>
                                         <th style="text-align: center;">아이디</th>
                                         <th style="text-align: center;">비밀번호</th>
                                         <th style="text-align: center; ">직책</th>
@@ -67,8 +68,10 @@
                                     </tr>
                                 </thead>
                                 <tbody id="tbody">
+
                                     {% for item in member_list %}
                                     <tr>
+                                        <td style="vertical-align: middle; text-align: center;">{{ loop.index + (page_no|int - 1)*10 }}</td>
                                         <td style="vertical-align: middle; text-align: center;">{{ item.user_id }}</td>
                                         <td style="vertical-align: middle; text-align: center;">{{ item.user_pw }}</td>
                                         <td style="vertical-align: middle; text-align: center;">{{ item.user_name}}</td>
@@ -82,38 +85,10 @@
                                 </tbody>
                             </table>
                         </div>
-
-                        <nav class="pagination-container" style="text-align: center; padding-bottom: 30px;">
-                            
-                            {% if page_no|int != 1 %}
-                                <button class="pagination-button" id="prev-button" title="Previous page" aria-label="Previous page">&lt;</button>	
-                            {% endif %}	
-
-                            {% for i in range(pgn) %}	 
-                                {% if i+1 == page_no|int %}
-                                    <a href="/member?page_no={{ i+1 }}">{{ i+1 }}</a>
-                                {% else %}
-                                    <a href="/member?page_no={{ i+1 }}" style="color: #333;">{{ i+1 }}</a>
-                                {% endif %}
-                            {% endfor %}
-
-                            {% if page_no|int != pgn %}
-                                <button class="pagination-button" id="next-button" title="Next page" aria-label="Next page">&gt;</button>
-                            {% endif %}	
-
-                        </nav>
-                        <script>
-                            $("#prev-button").on("click", function(){
-                                location.href = "/member?page_no={{ page_no|int -1 }}"
-                            })
-                            $("#next-button").on("click", function(){
-                                location.href = "/member?page_no={{ page_no|int +1 }}"
-                            })
-                        </script>
+                        {% include './inc/pagination.html' %}  
                     </div> 
                 </div>
             </section>
-
             {% include './inc/footer.html' %}
         </section>
 
