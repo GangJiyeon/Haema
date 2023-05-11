@@ -1,0 +1,713 @@
+<!--#include virtual = "/inc/dbconfig.asp"--> 
+<!DOCTYPE html>
+<!--[if IE 9 ]><html class="ie9"><![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>해마_업체등록</title>
+
+    <!-- Vendor CSS -->
+    <link href="{{ url_for('static', filename='vendors/bower_components/animate.css/animate.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='vendors/bower_components/google-material-color/dist/palette.css') }}" rel="stylesheet">
+        
+    <!-- CSS -->
+    <link href="{{ url_for('static', filename='css/app.min.1.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/app.min.2.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/common/css/reset.css') }}" rel="stylesheet"> 
+    <link href="{{ url_for('static', filename='css/common/css/fonts.css') }}" rel="stylesheet">
+        
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+
+    <link href="{{ url_for('static', filename='css/insert.css') }}" rel="stylesheet">
+
+    <!-- daum map (주소찾기) -->
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script src="{{ url_for('static', filename='css/common/plugins/jQuery/jquery-3.6.0.min.js') }}" > </script>        
+    <script src="{{ url_for('static', filename='js/dbconnection.js') }}" > </script>        
+
+    <style>
+        #tabli1 {
+            border-right: 0px;
+        }
+        .list li.on a {
+            color: #fff;
+            background-color: #749FDB;
+            box-sizing: border-box;
+        }
+        .list li.on:nth-child(2) a {
+            color: #fff;
+            background-color: #08C17C;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body data-ma-header="teal">
+    {% include './inc/header.html' %}        
+    <section id="main">
+        {% include './inc/aside.html' %}
+        <section id="content">
+            <div class="container">
+                <!-- <div class="c-header">
+                    <h2>Table</h2>
+                </div> -->
+                <div class="card">
+                    <div class="c-header" style="padding: 20px;">
+                        <!--  <h2 style="color: #333;">※ <span style="color: #08C17C; font-weight: bold;">네이버</span>와 <span style="color: red;">관리자페이지</span>로 업체가 등록됩니다.</h2> -->
+                    </div> 
+
+                    <div class="wrap">
+
+                        <!-- 탭 -->
+                        <div class="list" >
+                            <ul class="tabs">
+                                <li class="on" id="tabli1"><a href="#tab1">관리자페이지 업체등록</a></li>
+                                <li id="tabli2"><a href="#tab2">네이버 업체등록</a></li>
+                            </ul>
+                        </div>
+
+                        <div id="tab1" class="serrvice_wrapper" style="display: block;">
+                            <form id="service_frm">
+                                <div class="service_info_wrapper">
+                                    <div class="service_info_title" style="margin-bottom: 0;">
+                                        <span></span>
+                                        <span class="require"><i class="xi-check "></i>필수입력</span>
+                                    </div>
+
+                                    <!-- 업체코드 -->
+                                    <div class="input_wrapper">
+                                        <span class="require"><i class="xi-check"></i>업체코드</span>
+                                        <div class="info_input">
+                                            <input  name="bizCode" id="biz_code" maxLength="12" type="text"   placeholder="업체코드를 입력해주세요. 예)MJ0000000000" maxlength="30" >
+                                            
+                                            <span id="bizCodeHelp" class="bizCodeHelp-txt success">
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <!-- 업체명 -->
+                                    <div class="input_wrapper">
+                                        <span class="require"><i class="xi-check"></i>업체명</span>
+                                        <div class="info_input">
+                                            <input  name="biz_name" id="biz_name" type="text"   placeholder="업체명을 입력해주세요." maxlength="30" >
+                                            
+                                        </div>
+                                    </div>
+                                
+                                    <!-- 구분 -->
+                                    <div class="input_wrapper">
+                                        <span class="require"><i class="xi-check"></i>구분</span>
+                                        <select name="gubun_sel" id="gubun_sel" class="term_select"
+                                        style="height: 40px; border: 1px solid #cccccc; padding: 0 10px; width:100%;">
+                                            <option value="">선택</option>
+                                            <option value="cruise" class="">유람선</option>
+                                            <option value="ferry" class="">여객선</option>
+                                        </select>
+                                    </div>
+
+
+                                    <!-- 네이버코드 -->
+                                    <div class="input_wrapper">
+                                        <span class="require"><i class="xi-check"></i>네이버업체코드</span>
+                                        <div class="info_input">
+                                            <input  name="naver_biz_code" id="naver_biz_code" type="text"   placeholder="네이버업체코드를 입력해주세요. 예)152270" maxlength="30" >
+                                            
+                                        </div>
+                                    </div>
+                                
+                                    <!-- 계좌정보 -->
+                                    <div class="intro_report" style="margin-bottom: 10px;">
+                                        <div class="intro_report_title">
+                                            <span class="require"><i class="xi-check" style="left: -30px;top: 10px;"></i>계좌정보</span>
+                                        </div>
+                                        <div class="reveal_report_wrapper">
+                                            <ul class="reveal_report_ul">
+                                                <li class="reveal_report_item">
+                            
+                                                    <div class="reveal_report_contents_wrapper">
+                                                        <div class="reveal_report_input_wrapper">
+                                                            <span style="width: 60px;  margin-right: 10px;line-height: 3;">은행</span>
+                                                            <div class="reveal_report_input">
+                                                                <input type="text" name="bank_name" id="bank_name" placeholder="은행을 입력해주세요.">
+                                                            
+                                                            </div>
+                                                        </div>
+                            
+                                                        <div class="reveal_report_input_wrapper">
+                                                            <span style="width: 60px;  margin-right: 10px;line-height: 3;">예금주</span>
+                                                            <div class="reveal_report_input">
+                                                                <input  type="text" name="account_name" id="account_name" placeholder="예금주를 입력해주세요."></input>
+                                                            
+                                                            </div>
+                                                        </div>
+                                                    
+                                                        <div class="reveal_report_input_wrapper">
+                                                            <span style="width: 60px;   margin-right: 10px;line-height: 3;">계좌번호</span>
+                                                            <div class="reveal_report_input">
+                                                                <input type="text" name="account_number" id="account_number" placeholder="계좌번호를 입력해주세요." ></input>
+                                                            
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+
+                                        </div>
+                                    </div>
+                                
+                                    <!-- 홈페이지 -->
+                                    <div class="reserve_site ">
+                                        <div class="site_title">
+                                            <span class="require"><i class="xi-check"></i>홈페이지</span>
+                                        </div>
+
+                                        <div class="phone_input">
+                                            <input type="text" placeholder="홈페이지를 입력해주세요." name="homepage_url" id="homepage_url">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>   
+
+                            <div class="save_btn">
+                                <button style="width:170px;font-size: 15px;" id="save_btn">관리자페이지 등록</button>
+                            </div>
+
+                        </div>
+
+                        
+
+
+                        <div id="tab2" class="serrvice_wrapper" style="display: none;">
+                            
+                            <div class="service_info_wrapper" >
+                                <div class="service_info_title" style="margin-bottom: 0;">
+                                    <span></span>
+                                    <span class="require"><i class="xi-check "></i>필수입력</span>
+                                </div>
+
+                                <!-- 업종코드 -->
+                                <div class="input_wrapper">
+                                    <span class="require"><i class="xi-check"></i>업종코드</span>
+                                    <select name="term_select" id="bizes_category" class="term_select"
+                                    style="height: 40px; border: 1px solid #cccccc; padding: 0 10px; margin-bottom: 17px; width:100%;">
+                                        <option value="">선택</option>
+                                        <option value="DL00" class="adjust_option">기타</option>
+                                        <option value="DL05" class="adjust_option">행사/축제</option>
+                                        <option value="DL10" class="adjust_option">체험학습/프로그램</option>
+                                        <option value="DL15" class="adjust_option">스포츠/레저</option>
+                                        <option value="DL19" class="adjust_option">공연/전시</option>
+                                        <option value="DL20" class="adjust_option">공간대여</option>
+                                        <option value="DL33" class="adjust_option">여행</option>
+                                        <option value="DL42" class="adjust_option">관광시설</option>
+                                    </select>
+                                </div>
+                                
+                                <!-- 서비스명 -->
+                                <div class="input_wrapper">
+                                    <span class="require"><i class="xi-check"></i>서비스명</span>
+                                    <div class="info_input">
+                                        <input  name="s_name" id="service_name" type="text" class="limit" placeholder="서비스명을 입력해주세요." maxlength="30" > 
+                                        <span><span class="char_num">0</span>자<span class="limit_cnt"> / 30자</span></span>
+                                    </div>
+                                </div>
+
+                                <!-- 홍보문구 --> 
+                                <div class="input_wrapper">
+                                    <span>홍보문구</span>
+                                    <div class="info_input">
+                                        <textarea  maxlength="50" minlength="7" name="promo_desc" id="promo_desc" cols="30" rows="10" class="limit" placeholder="홍보문구를 입력해주세요."></textarea>
+                                        <span><span class="char_num">0</span>자<span class="limit_cnt"> / 50자(최소 7자)</span></span>
+                                    </div>
+                                </div>
+
+                                <!-- 상세설명 -->
+                                <div class="input_wrapper">
+                                    <span class="require"><i class="xi-check "></i>상세설명</span>
+                                    <div class="info_input">
+                                        <textarea maxlength="2000" minlength="20" name="desc" id="desc" cols="30" rows="10" class="limit" placeholder="상세설명을 입력해주세요."></textarea>
+                                        <span><span class="char_num">0</span>자<span class="limit_cnt"> / 2000자(최소 20자)</span></span>
+                                    </div>
+                                </div>
+
+                                <!-- 업체사진 -->
+                                <div class="input_wrapper">
+                                    <span class="require require_img_title"><i class="xi-check "></i>업체사진</span>
+                                    <div class="info_input"  >
+                                        <div class="enter_img">
+                                            <input name="enter_img" id="enter_img" placeholder="업체 이미지 url을 입력하세요." style="margin-bottom: 20px;">
+                                        </div>
+                                        <div class="enter_img_btn">
+                                            <button><i class="xi-plus-circle-o"></i>업체  이미지 추가 (최대 120장)</button>
+                                        </div>
+                                    </div>
+
+                                <!--     <div class="image_file_wrapper">
+
+                                        <div class="add_image">
+                                            <label for="enterprise_img">파일추가</label>
+                                            <input type="file" multiple id="enterprise_img" name="enterprise_img" />
+                                            
+                                        </div>
+
+                                        <ul id="img_list">
+                                            <li class="img_list">
+                                                    <span>
+                                                    전체<br>업체사진
+                                                </span> 
+                                            </li>
+                                        </ul>
+                                    </div> -->
+                                </div>
+
+                                <!-- 예약혜택 -->
+                                <div class="input_wrapper">
+                                    <span>예약혜택</span>
+                                    <div class="info_input">
+                                        <textarea maxlength="100" minlength="3" name="reserve_desc" id="reserve_desc" cols="30" rows="10" class="limit" placeholder="(예, 네이버 예약 시 10% 할인 등) 예약혜택을 입력해주세요."></textarea>
+                                        <span><span class="char_num">0</span>자<span class="limit_cnt"> / 100자(최소 3자)</span></span>
+                                    </div>
+                                </div>
+                                <div class="reserve_benefit">
+                                    <div class="reserve_select_wrapper">
+                                        <span class="reserve_title">예약혜택 진행기간</span>
+                                        <select name="term_select" id="" class="term_select">
+                                            <option value="">상시(기간 미노출)</option>
+                                            <option value="adjust" class="adjust_option">기간설정</option>
+                                        </select>
+
+                                        <div class="reserve_date">
+                                            <input type="date" name="reserve_date" id="reserve_benefit" class="Date">
+                                            <span>~</span>
+                                            <input type="date" name="reserve_date" id="reserve_benefit_set" class="Date">
+                                        </div>
+                                    </div>
+
+                                    <div class="reserve_select_wrapper">
+                                        <span class="reserve_title">예약혜택 노출기간</span>
+                                        <select name="term_select" id="" class="term_select">
+                                            <option value="">상시노출</option>
+                                            <option value="adjust" class="adjust_option">기간설정</option>
+                                        </select>
+
+                                        <div class="reserve_date">
+                                            <input type="date" name="reserve_date" id="booking_benefit" class="Date">
+                                            <span>~</span>
+                                            <input type="date" name="reserve_date" id="booking_benefit_set" class="Date">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 상세소개 -->
+                                <div class="intro_detail" style="margin-bottom: 50px; padding-bottom: 75px; border-bottom: 1px solid #ddd;">
+                                    <div class="intro_detail_title">
+                                        <span>상세소개</span>
+                                    </div>
+                                    <div class="reveal_wrapper">
+                                        <ul class="reveal_ul">
+                                            <li class="reveal_item">
+                                                <div class="reveal_sort_wrapper">
+                                                    <span>노출순서 <span class="reveal_cnt">1</span></span>
+                                                    <div class="sort_btn">
+                                                        <button class="up"><i class="fa-solid fa-angle-up"></i></button>
+                                                        <button class="down"><i class="fa-solid fa-angle-down"></i></button>
+                                                        <i class="fa-solid fa-x"></i>
+                                                    </div>
+                                                </div>
+                        
+                                                <div class="reveal_contents_wrapper">
+                                                    <div class="reveal_input_wrapper">
+                                                        <span>제목</span>
+                                                        <div class="reveal_input">
+                                                            <input type="text" name="reveal_title" id="reveal_title" placeholder="제목을 입력해주세요." class="limit" maxlength="40" minlength="3">
+                                                            <span><span class="char_num">0</span>자<span class="limit_cnt"> / 40자 (최소 3자)</span></span>
+                                                        </div>
+                                                    </div>
+                        
+                                                    <div class="reveal_input_wrapper">
+                                                        <span>설명</span>
+                                                        <div class="reveal_input">
+                                                            <textarea type="text" name="reveal_desc" id="reveal_desc" placeholder="설명을 입력해주세요." class="limit" maxlength="600" minlength="4"></textarea>
+                                                            <span><span class="char_num">0</span>자<span class="limit_cnt"> / 600자 (최소 4자)</span></span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="reveal_input_wrapper">
+                                                        <span style="margin-right: 16px; ">이미지</span>
+                                                        <div class="reveal_input">
+                                                            <input name="reveal_img" placeholder="상세소개 이미지 url을 입력하세요." style="margin-bottom: 20px;">
+                                                            <input name="reveal_img" placeholder="상세소개 이미지 url을 입력하세요." style="margin-bottom: 20px;">
+                                                            <input name="reveal_img" placeholder="상세소개 이미지 url을 입력하세요." style="margin-bottom: 20px;">
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- <div class="reveal_img_wrapper">
+                                                        <ul>
+                                                            <li class="img_list">
+                                                                < <span>
+                                                                    전체<br>업체사진
+                                                                </span> 
+                                                            </li>
+                                                        </ul>
+                                                        <div class="add_image">
+                                                            <label for="reveal_img">파일추가</label>
+                                                        <input type="file" multiple name="reveal_img" id="reveal_img">
+                                                        <span class="reveal_notion" >한 장 당 최대 20MB, 최대 3장</span>
+                                                        </div>
+                                                    </div> -->
+                                                </div>
+
+                                            </li>
+                                        </ul>
+
+                                        <div class="reveal_btn">
+                                            <button><i class="xi-plus-circle-o"></i>상세소개추가</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 업체정보 -->
+                                <div class="enterprise_info">
+                                    <div class="enterprise_info_title">
+                                        <span>업체정보</span>
+                                        <span class="require"><i class="xi-check "></i>필수입력</span>
+                                    </div>
+
+                                    <!-- 업체명 -->
+                                    <div class="input_wrapper">
+                                        <span class="require"><i class="xi-check "></i>업체명</span>
+                                        <div class="info_input">
+                                            <input type="text" class="limit" placeholder="업체명을 입력해주세요."
+                                                maxlength="30" name="e_name" id="e_name">
+                                            <span><span class="char_num">0</span>자<span class="limit_cnt"> / 30자</span></span>
+                                        </div>
+                                    </div>
+
+                                    <!-- 대표자명 -->
+                                    <div class="input_wrapper">
+                                        <span class="require"><i class="xi-check "></i>대표자명</span>
+                                        <div class="info_input">
+                                            <input name="owner" id="repr_owner_name" type="text" class="limit" placeholder="대표자명을 입력해주세요." maxlength="30" >
+                                            <span><span class="char_num">0</span>자<span class="limit_cnt"> / 30자</span></span>
+                                        </div>
+                                    </div>
+
+                                    <!-- 주소 -->
+                                    <div class="input_wrapper address">
+                                        <span class="require"><i class="xi-check "></i>주소</span>
+                                        <div class="info_input">
+                                            <input type="text" placeholder="주소를 입력하세요." id="jibun" name="jibun" readonly>
+                                        <!--  <input type="text" placeholder="도로명" id="add_doro" readonly> -->
+                                        </div>
+                                    </div>
+                                
+
+                                    <!-- 찾아가는 길 -->
+                                    <div class="input_wrapper">
+                                        <span>상세위치</span>
+                                        <div class="info_input">
+                                            <textarea name="add_detail" id="add_detail" cols="30" rows="10" class="limit" placeholder="방문객이 쉽게 찾도록 위치에 대한 상세한 설명 및 교통편을 입력해주세요." maxlength="400"  ></textarea>
+                                            <span><span class="char_num">0</span>자<span class="limit_cnt"> / 400자</span></span>
+                                        </div>
+                                    </div>
+
+                                    <!-- 주차 -->
+                            <div class="parking_wrapper">
+                                <span>주차</span>
+                                <div class="parking_contents_wrapper">
+
+                                    <!-- 주차설정토글 -->
+                                    <div class="parking_set_button_wrapper">
+                                        <div class="parking_set_choose">
+                                            <span class="on">가능</span>
+                                            <span class="off active">불가</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- 주차가능토글 -->
+                                    <div class="parking_button_wrapper">
+                                        <div class="parking_choose">
+                                            <span class="on">가능</span>
+                                            <span class="off active">불가</span>
+                                        </div>
+                                        <div class="parking_pay">
+                                            <input type="radio" name="parking_pay" id="parking_nonfree">
+                                            <label for="parking_nonfree">주차비 유료</label>
+                                            <input type="radio" name="parking_pay" id="parking_free"checked>
+                                            <label for="parking_free">주차비 무료</label>
+                                        </div>
+                                    </div>
+
+                                    <!-- 과금 -->
+                                    <div class="parking_time_pay" style="display: none;">
+
+                                        <div class="over_time_pay">
+                                            <input type="radio" name="parking_time" id="time_over_pay" class="time_over_pay" checked style="margin-left: 0;">
+                                            <label for="time_over_pay">시간당 과금</label>
+                                            <input type="radio" name="parking_time" id="flat_over_pay" class="flat_over_pay">
+                                            <label for="flat_over_pay">정액 과금</label>
+                                        </div>
+                                        
+                                        <div class="first_pay pay_type">
+                                            <div class="pay_title">
+                                                <span>최초</span>
+                                                <div class="">
+                                                    <input type="radio" name="pay_first" id="pay_first_nonfree" checked> 
+                                                    <label for="valet_nonfree" > 유료</label>
+                                                    <input type="radio" name="pay_first" id="pay_first_free">
+                                                    <label for="">무료</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="pay_select_wrapper">
+                                                <div class="pay_select">
+                                                    <select name="parking_hour" id="parking_hour" class="parking_hour">
+                                                        <option value="">00시간</option>
+                                                        <option value="">01시간</option>
+                                                        <option value="">02시간</option>
+                                                        <option value="">03시간</option>
+                                                        <option value="">04시간</option>
+                                                        <option value="">05시간</option>
+                                                        <option value="">06시간</option>
+                                                        <option value="">07시간</option>
+                                                        <option value="">08시간</option>
+                                                        <option value="">09시간</option>
+                                                        <option value="">10시간</option>
+                                                        <option value="">11시간</option>
+                                                        <option value="">12시간</option>
+                                                    </select>
+                
+                                                    <select name="parking_minute" id="parking_minute" class="parking_minute">
+                                                        <option value="">00분</option>
+                                                        <option value="">10분</option>
+                                                        <option value="">20분</option>
+                                                        <option value="">30분</option>
+                                                        <option value="">30분</option>
+                                                        <option value="">40분</option>
+                                                        <option value="">50분</option>
+                                                    </select>
+                                                </div>
+
+                                                <div>
+                                                    <input type="text" class="won" name="won" id="time_over_pay_price" >
+                                                    <span class="unit_won">원</span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="over_pay pay_type">
+                                            <div class="pay_title">
+                                                <span>추가요금</span>
+                                            </div>
+
+                                            <div class="pay_select_wrapper">
+                                                <div class="pay_select">
+                                                    <select name="parking_hour" id="" class="parking_hour">
+                                                        <option value="">00시간</option>
+                                                        <option value="">01시간</option>
+                                                        <option value="">02시간</option>
+                                                        <option value="">03시간</option>
+                                                        <option value="">04시간</option>
+                                                        <option value="">05시간</option>
+                                                        <option value="">06시간</option>
+                                                        <option value="">07시간</option>
+                                                        <option value="">08시간</option>
+                                                        <option value="">09시간</option>
+                                                        <option value="">10시간</option>
+                                                        <option value="">11시간</option>
+                                                        <option value="">12시간</option>
+                                                    </select>
+                
+                                                    <select name="parking_minute" id="" class="parking_minute">
+                                                        <option value="">00분</option>
+                                                        <option value="">10분</option>
+                                                        <option value="">20분</option>
+                                                        <option value="">30분</option>
+                                                        <option value="">30분</option>
+                                                        <option value="">40분</option>
+                                                        <option value="">50분</option>
+                                                    </select>
+                                                    
+                                                </div>
+
+                                                <div>
+                                                    <input type="text"  class="won" name="won">
+                                                    <span class="unit_won">원</span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="total_pay pay_type">
+                                            <div class="pay_title">
+                                                <span>최대</span>
+                                            </div>
+                                            <input type="text"  class="won" name="won">
+                                            <span class="unit_won">원</span>
+                                        </div>
+
+                                        
+                                    </div>
+
+                                    <!-- 정액과금 -->
+                                    <div class="flat_pay pay_type"style="display: none;">
+                                        <div class="pay_title">
+                                            <span>1회 주차시</span>
+                                        </div>
+                                        <input type="text" class="won" name="won">
+                                        <span class="unit_won">원</span>
+                                    </div>
+
+                                    <!-- 발렛 파킹 -->
+                                    <div class="valet_wrapper">
+                                        <div class="valet_pay_wrapper">
+                                            <div class="valet_title">
+                                                <span>발렛파킹</span>
+                                            </div>
+                
+                                            <div class="valet_cost">
+                                                <input type="radio" name="valet_pay" id="valet_nonfree" > 
+                                                <label for="valet_nonfree"> 유료</label>
+                                                <div class="valet_pay_input">
+                                                    <input type="text" class="won" name="won" id="valet_price" disabled>
+                                                    <span class="unit_won">원</span>
+                                                </div>
+                                                <input type="radio" name="valet_pay" id="valet_free" >
+                                                <label for="valet_free"> 무료</label>
+                                                <input type="radio" name="valet_pay" id="valet_no" checked>
+                                                <label for="valet_no"> 불가</label>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="valet_detail">
+                                            <div class="valet_detail_title">
+                                                <span>상세안내</span>
+                                            </div>
+                                            
+                                            <div class="info_input">
+                                                <textarea name="valet_detail" id="valet_detail" cols="30" rows="10" class="limit" placeholder="주차 관련 안내할 상세 내용이 있다면 입력해주세요." maxlength="400" ></textarea>
+                                                <span><span class="char_num">0</span>자<span class="limit_cnt"> / 400자</span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                                </div>
+
+                                <!-- 예약문의 -->
+                                <div class="reserve_phone ">
+                                    <div class="phone_title">
+                                        <span class="require"><i class="xi-check "></i>예약문의</span>
+                                    </div>
+
+                                    <div class="phone_input">
+                                        <input type="text" class="phone" value="010" maxlength="4" name="phone" id="phone_first">
+                                        <span>-</span>
+                                        <input type="text" class="phone" maxlength="4" name="phone" id="phone_middle">
+                                        <span>-</span>
+                                        <input type="text" class="phone" maxlength="4" name="phone" id="phone_last">
+                                    </div>
+                                </div>
+
+                                <!-- 이메일 -->
+                                <div class="reserve_email ">
+                                    <div class="email_title">
+                                        <span class="require"><i class="xi-check "></i>이메일</span>
+                                    </div>
+
+                                    <div class="phone_input">
+                                        <input type="text" placeholder="이메일을 입력해주세요." name="email" id="email">
+                                    </div>
+                                </div>
+
+                                <!-- 관리자 연락처 -->
+                                <div class="reserve_manageer ">
+                                    <div class="manageer_title">
+                                        <span class="require"><i class="xi-check "></i>관리자 연락처</span>
+                                    </div>
+
+                                    <div class="phone_input">
+                                        <input type="text" placeholder="관리자 연락처를 입력해주세요." name="manager_phone" id="manager_phone">
+                                    </div>
+                                </div>
+
+                                <!-- 웹사이트 -->
+                                <div class="reserve_site ">
+                                    <div class="site_title">
+                                        <span>웹사이트</span>
+                                    </div>
+
+                                    <div class="phone_input">
+                                        <input type="text" placeholder="웹사이트를 입력해주세요." name="web_site" id="web_site">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!--지도 !!  -->
+
+                            <div class="save_btn">
+                                <button style="width: 170px; background-color: #08C17C;" type="button" onclick="businessesCreate()">네이버 업체등록</button>
+                            </div>
+
+                        </div>
+
+                        
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {% include './inc/footer.html' %}
+
+    </section>
+
+    <!-- Page Loader -->
+    <div class="page-loader palette-Teal bg">
+        <div class="preloader pl-xl pls-white">
+                <svg class="pl-circular" viewBox="25 25 50 50">
+                <circle class="plc-path" cx="50" cy="50" r="20"/>
+            </svg> 
+        </div>
+    </div>
+
+    
+    
+    <!-- Javascript Libraries -->
+    <script src="{{ url_for('static', filename='vendors/bower_components/jquery/dist/jquery.min.js') }}" > </script>        
+    <script src="{{ url_for('static', filename='vendors/bower_components/bootstrap/dist/js/bootstrap.min.js') }}" > </script>        
+    <script src="{{ url_for('static', filename='vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js') }}" > </script>
+    <script src="{{ url_for('static', filename='vendors/bower_components/Waves/dist/waves.min.js') }}" > </script>
+    <script src="{{ url_for('static', filename='vendors/bootstrap-growl/bootstrap-growl.min.js') }}" > </script>
+
+    <!-- Placeholder for IE9 -->
+    <!--[if IE 9 ]>
+        <script src="vendors/bower_components/jquery-placeholder/jquery.placeholder.min.js"></script>
+    <![endif]-->
+    
+    <script src="{{ url_for('static', filename='js/common/functions.js') }}" > </script>
+    <script src="{{ url_for('static', filename='js/common/actions.js') }}" > </script>
+    <script src="{{ url_for('static', filename='js/common/demo.js') }}" > </script>        
+    
+    <script src="https://kit.fontawesome.com/70c929d7d4.js" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='css/common/plugins/jQuery/jquery-3.6.0.min.js') }}" > </script>
+    <script src="http://code.jquery.com/jquery-latest.js "></script>
+    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" /> 
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script> 
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
+
+    <script src="{{ url_for('static', filename='js/common/insert.js') }}" > </script>        
+    <script src="{{ url_for('static', filename='js/common/common_include.js') }}" > </script>
+    <script src="{{ url_for('static', filename='js/business/api_businesses.js') }}" > </script>
+
+    <script src="{{ url_for('static', filename='js/common/login_check.js') }}" > </script>
+    <script src="{{ url_for('static', filename='js/business/biz_validation.js') }}" > </script>
+    <script src="{{ url_for('static', filename='js/business/biz_insert.js') }}" > </script>
+</body>
+</html>
+        

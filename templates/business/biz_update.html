@@ -1,0 +1,233 @@
+<!--#include virtual = "/inc/dbconfig.asp"--> 
+<!DOCTYPE html>
+<!--[if IE 9 ]><html class="ie9"><![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>해마_업체수정</title>
+
+        <!-- Vendor CSS -->
+        <link href="{{ url_for('static', filename='vendors/bower_components/animate.css/animate.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='vendors/bower_components/google-material-color/dist/palette.css') }}" rel="stylesheet">
+            
+        <!-- CSS -->
+        <link href="{{ url_for('static', filename='css/app.min.1.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='css/app.min.2.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='css/common/css/reset.css') }}" rel="stylesheet"> 
+        <link href="{{ url_for('static', filename='css/common/css/fonts.css') }}" rel="stylesheet">
+         
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+
+        <link href="{{ url_for('static', filename='css/insert.css') }}" rel="stylesheet">
+    </head>
+
+    <body data-ma-header="teal">
+        {% include './inc/header.html' %}        
+        <section id="main">
+            {% include './inc/aside.html' %}
+
+
+            <section id="content">
+                <div class="container">
+                    <!-- <div class="c-header">
+                        <h2>Table</h2>
+                    </div> -->
+
+                    <div class="card">
+                        <div class="c-header" style="padding: 20px;">
+                          <!--  <h2 >※ 관리자페이지 업체수정</h2>  -->
+                        </div> 
+
+                        <div class="wrap">
+
+                            <!-- 탭 -->
+                             <div class="list" >
+                                <ul class="tabs">
+                                    <li class="on" id="tabli1" style="width: 100%;"><a href="#tab1" style="width: 100%;">관리자페이지 업체수정</a></li>
+                                </ul>
+                            </div> 
+
+                            <div id="tab1" class="serrvice_wrapper" >
+                                <form id="service_frm">
+                                    <div class="service_info_wrapper">
+                                        <div class="service_info_title" style="margin-bottom: 0;">
+                                            <span></span>
+                                            <span class="require"><i class="xi-check "></i>필수입력</span>
+                                        </div>
+
+                                        <!-- 업체코드 -->
+                                        <div class="input_wrapper">
+                                            <span class="require"><i class="xi-check"></i>업체코드</span>
+                                            <div class="info_input">
+                                                <input  name="biz_code" id="biz_code" maxLength="12" type="text"  placeholder="업체코드를 입력해주세요. 예)MJ0000000000" maxlength="30" readonly>
+                                               
+                                                <span id="bizCodeHelp" class="bizCodeHelp-txt success">
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <!-- 업체명 -->
+                                        <div class="input_wrapper">
+                                            <span class="require"><i class="xi-check"></i>업체명</span>
+                                            <div class="info_input">
+                                                <input  name="biz_name" id="biz_name" type="text"  placeholder="업체명을 입력해주세요." maxlength="30" >
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <!-- 구분 -->
+                                        <div class="input_wrapper">
+                                            <span class="require"><i class="xi-check"></i>구분</span>
+                                            <select name="gubun_sel" id="gubun_sel" class="term_select"
+                                            style="height: 40px; border: 1px solid #cccccc; padding: 0 10px; width:100%;">
+                                                <option value="">선택</option>
+                                                <option value="cruise" class="">유람선</option>
+                                                <option value="ferry" class="">여객선</option>
+                                            </select>
+                                        </div>
+
+
+                                        <!-- 네이버코드 -->
+                                        <div class="input_wrapper">
+                                            <span class="require"><i class="xi-check"></i>네이버업체코드</span>
+                                            <div class="info_input">
+                                                <input  name="naver_biz_code" id="naver_biz_code" type="text"  placeholder="네이버업체코드를 입력해주세요. 예)152270" maxlength="30" >
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <!-- 계좌정보 -->
+                                        <div class="intro_report" style="margin-bottom: 10px;">
+                                            <div class="intro_report_title">
+                                                <span class="require"><i class="xi-check" style="left: -30px;top: 10px;"></i>계좌정보</span>
+                                            </div>
+                                            <div class="reveal_report_wrapper">
+                                                <ul class="reveal_report_ul">
+                                                    <li class="reveal_report_item">
+                                
+                                                        <div class="reveal_report_contents_wrapper">
+                                                            <div class="reveal_report_input_wrapper">
+                                                                <span style="width: 60px;  margin-right: 10px;line-height: 3;">은행</span>
+                                                                <div class="reveal_report_input">
+                                                                    <input type="text" name="bank_name" id="bank_name" placeholder="은행을 입력해주세요.">
+                                                                
+                                                                </div>
+                                                            </div>
+                                                            <div class="reveal_report_input_wrapper">
+                                                                <span style="width: 60px;  margin-right: 10px;line-height: 3;">예금주</span>
+                                                                <div class="reveal_report_input">
+                                                                    <input  type="text" name="account_name" id="account_name" placeholder="예금주를 입력해주세요."></input>
+                                                                
+                                                                </div>
+                                                            </div>
+                                                            <div class="reveal_report_input_wrapper">
+                                                                <span style="width: 60px;   margin-right: 10px;line-height: 3;">계좌번호</span>
+                                                                <div class="reveal_report_input">
+                                                                    <input type="text" name="account_number" id="account_number" placeholder="계좌번호를 입력해주세요." ></input>
+                                                                
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    
+                                        <!-- 홈페이지 -->
+                                        <div class="reserve_site ">
+                                            <div class="site_title">
+                                                <span class="require"><i class="xi-check"></i>홈페이지</span>
+                                            </div>
+
+                                            <div class="phone_input">
+                                                <input type="text" placeholder="홈페이지를 입력해주세요." name="homepage_url" id="homepage_url">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>   
+
+                                <div class="save_btn">
+                                    <button style="width:170px; font-size: 15px;" id="update_btn">관리자페이지 업체수정</button>
+                                </div>
+
+                            </div>
+
+                            <style>
+                                #tabli1 {
+                                    border-right: 0px;
+                                }
+                                .list li.on a {
+                                    color: #fff;
+                                    background-color: #749FDB;
+                                    box-sizing: border-box;
+                                }
+                               
+                                .list li.on:nth-child(2) a {
+                                    color: #fff;
+                                    background-color: #08C17C;
+                                    box-sizing: border-box;
+                                }
+                               
+                            </style>
+                        
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {% include './inc/footer.html' %}
+
+        </section>
+
+        <!-- Page Loader -->
+        <div class="page-loader palette-Teal bg">
+            <div class="preloader pl-xl pls-white">
+                 <svg class="pl-circular" viewBox="25 25 50 50">
+                    <circle class="plc-path" cx="50" cy="50" r="20"/>
+                </svg> 
+            </div>
+        </div>
+
+       
+        
+        <!-- Javascript Libraries -->
+        <script src="{{ url_for('static', filename='vendors/bower_components/jquery/dist/jquery.min.js') }}" > </script>        
+        <script src="{{ url_for('static', filename='vendors/bower_components/bootstrap/dist/js/bootstrap.min.js') }}" > </script>        
+        <script src="{{ url_for('static', filename='vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js') }}" > </script>
+        <script src="{{ url_for('static', filename='vendors/bower_components/Waves/dist/waves.min.js') }}" > </script>
+        <script src="{{ url_for('static', filename='vendors/bootstrap-growl/bootstrap-growl.min.js') }}" > </script>
+
+        <!-- Placeholder for IE9 -->
+        <!--[if IE 9 ]>
+            <script src="vendors/bower_components/jquery-placeholder/jquery.placeholder.min.js"></script>
+        <![endif]-->
+        
+        <script src="{{ url_for('static', filename='js/common/functions.js') }}" > </script>
+        <script src="{{ url_for('static', filename='js/common/actions.js') }}" > </script>
+        <script src="{{ url_for('static', filename='js/common/demo.js') }}" > </script>    
+
+        
+        <script src="https://kit.fontawesome.com/70c929d7d4.js" crossorigin="anonymous"></script>
+        <script src="{{ url_for('static', filename='css/common/plugins/jQuery/jquery-3.6.0.min.js') }}" > </script>    
+        <script src="http://code.jquery.com/jquery-latest.js "></script>
+        <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" /> 
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script> 
+        <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
+    
+        
+
+        
+        <script src="{{ url_for('static', filename='js/common/insert.js') }}" > </script>        
+        <script src="{{ url_for('static', filename='js/common/login_check.js') }}" > </script>
+        <script src="{{ url_for('static', filename='js/common/common_include.js') }}" > </script>
+        
+        <script src="{{ url_for('static', filename='js/business/api_businesses.js') }}" > </script>
+        <script src="{{ url_for('static', filename='js/business/biz_validation.js') }}" > </script>
+        <script src="{{ url_for('static', filename='js/business/biz_update.js') }}" > </script>
+
+    </body>
+  </html>
+        

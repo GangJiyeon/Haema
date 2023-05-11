@@ -1,0 +1,121 @@
+<!--#include virtual = "/inc/dbconfig.asp"--> 
+<!DOCTYPE html>
+<!--[if IE 9 ]><html class="ie9"><![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>해마여행사</title>
+
+        <!-- Vendor CSS -->
+        <link href="{{ url_for('static', filename='vendors/bower_components/animate.css/animate.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='vendors/bower_components/google-material-color/dist/palette.css') }}" rel="stylesheet">
+            
+        <!-- CSS -->
+        <link href="{{ url_for('static', filename='css/app.min.1.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='css/app.min.2.css') }}" rel="stylesheet">
+
+        <link href="{{ url_for('static', filename='css/common/css/reset.css') }}" rel="stylesheet"> 
+        <link href="{{ url_for('static', filename='css/common/css/fonts.css') }}" rel="stylesheet">
+        <link type="text/css" rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/insert.css') }}" >
+
+        <script src="{{ url_for('static', filename='css/common/plugins/jQuery/jquery-3.6.0.min.js') }}" > </script>        
+
+
+    </head>
+
+    <body data-ma-header="teal">
+        {% include './inc/header.html' %}        
+        <section id="main">
+            {% include './inc/aside.html' %}
+            <section id="content">
+                <div class="container">
+                    <div class="card">
+                        <div class="c-header" style="padding: 20px;">
+                            <h2 style="color: #333;">※ <span style="color: red;">관리자페이지</span>에서 동록한 업체를 조회합니다.</h2>
+                        </div> 
+                        <div>
+                            
+                        </div>
+                        <div class="table-responsive" id="paginated-list">
+                            <table class="table table-hover" >
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: center;">번호</th>
+                                        <th style="text-align: center;">업체코드</th>
+                                        <th style="text-align: center;">업체명</th>
+                                        <th style="text-align: center;">구분</th>
+                                        <th style="text-align: center;">네이버업체코드</th>
+                                        <th style="text-align: center;">계좌정보</th>
+                                        <th style="text-align: center;">홈페이지</th>
+                                        <th style="text-align: center;">수정/삭제</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody">
+                                    {% for item in biz_list %}
+                                    <tr>
+                                        <td style="vertical-align: middle;">{{ loop.index + (page_no|int - 1)*10 }}</td>
+                                        <td style="vertical-align: middle;">{{ item.biz_code }}</td>
+                                        <td style="vertical-align: middle;">{{ item.biz_name }}</td>
+                                        {% if item.gubun_sel == "cruise" %}
+                                            <td style="vertical-align: middle;">유람선</td>
+                                        {% else %}
+                                            <td style="vertical-align: middle;">여객선</td>
+                                        {% endif %}
+                                        <td style="vertical-align: middle;">{{ item.naver_biz_code }}</td>
+                                        <td>{{ item.bank_name }} <br> {{ item.account_name }} <br> {{ item.account_number }} </td>
+                                        <td style="vertical-align: middle;"><a href="{{ item.homepage_url }}" target="_blank">{{ item.homepage_url }}</a></td>
+                                        <td style='display: flex; vertical-align:middle; justify-content: center;'>
+                                            <button class="btn btn-primary btn-sm update-biz-btn" data-code="{{ item.biz_code }}" style="margin-right:10px; ">수정</button>
+                                            <button class="btn btn-danger btn-sm delete-biz-btn" data-code="{{ item.biz_code }}">삭제</button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% include './inc/pagination.html' %}  
+                    </div> 
+                </div>
+            </section>
+            {% include './inc/footer.html' %}
+        </section>
+
+        <!-- Page Loader -->
+        <div class="page-loader palette-Teal bg">
+            <div class="preloader pl-xl pls-white">
+               <!--  <svg class="pl-circular" viewBox="25 25 50 50">
+                    <circle class="plc-path" cx="50" cy="50" r="20"/>
+                </svg> -->
+            </div>
+        </div>
+
+        
+        <!-- Javascript Libraries -->
+        <script src="{{ url_for('static', filename='vendors/bower_components/jquery/dist/jquery.min.js') }}" > </script>        
+        <script src="{{ url_for('static', filename='vendors/bower_components/bootstrap/dist/js/bootstrap.min.js') }}" > </script>        
+        <script src="{{ url_for('static', filename='vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js') }}" > </script>
+        <script src="{{ url_for('static', filename='vendors/bower_components/Waves/dist/waves.min.js') }}" > </script>
+        <script src="{{ url_for('static', filename='vendors/bootstrap-growl/bootstrap-growl.min.js') }}" > </script>
+
+        <script src="https://kit.fontawesome.com/70c929d7d4.js" crossorigin="anonymous"></script>
+        <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" /> 
+        <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script> 
+
+        <script src="{{ url_for('static', filename='js/common/functions.js') }}" > </script>
+        <script src="{{ url_for('static', filename='js/common/actions.js') }}" > </script>
+        <script src="{{ url_for('static', filename='js/common/demo.js') }}" > </script>        
+        <script src="{{ url_for('static', filename='js/common/login_check.js') }}" > </script>
+        <script src="{{ url_for('static', filename='js/common/common_include.js') }}" > </script>
+        
+        <script src="{{ url_for('static', filename='js/business/api_businesses.js') }}" > </script>
+        <script src="{{ url_for('static', filename='js/business/biz_list.js') }}" > </script>
+
+       
+    </body>
+</html>
+     
