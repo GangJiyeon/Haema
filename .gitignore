@@ -1,0 +1,26 @@
+static/vendors/
+static/media/
+static/less/
+static/img/
+static/fonts/
+static/css/
+static/js/flot-charts
+static/js/X*/
+*min*
+*jquery*
+
+static/js/autolink.js
+static/js/charts.js
+static/js/edit.js
+static/js/swiper.js
+static/js/scroll*
+static/js/page*
+static/js/html*
+static/js/init.js
+
+py/__pycache__/
+
+! static/js/common/
+! static/js/member/
+
+*.png
