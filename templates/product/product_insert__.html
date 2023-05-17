@@ -1,0 +1,778 @@
+<!--#include virtual = "/inc/dbconfig.asp"--> 
+<!DOCTYPE html>
+<!--[if IE 9 ]><html class="ie9"><![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>해마_상품등록</title>
+
+    <!-- Vendor CSS -->
+    <link href="vendors/bower_components/animate.css/animate.min.css" rel="stylesheet">
+    <link href="vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css" rel="stylesheet">
+    <link href="vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet">
+    <link href="vendors/bower_components/google-material-color/dist/palette.css" rel="stylesheet">
+        
+    <!-- CSS -->
+    <link href="css/app.min.1.css" rel="stylesheet">
+    <link href="css/app.min.2.css" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="css/common/css/reset.css">
+    <link rel="stylesheet" href="css/common/css/fonts.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+
+    <link rel="stylesheet" href="css/insert.css">
+    <link rel="stylesheet" href="css/easybooking.css">
+
+    <!-- daum map (주소찾기) -->
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+    <!-- kakao map -->
+
+    <!--      
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=08830e6c428270a176beb380a21babdf&libraries=services"></script>
+    -->
+    <script src="css/common/plugins/jQuery/jquery-3.6.0.min.js"></script>  
+</head>
+
+<body data-ma-header="teal">
+    <header data-include="../inc/header.html"></header>
+
+    <section id="main">
+        <aside data-include="../inc/aside.html"></aside>
+
+        <section id="content">
+            <div class="container">
+              
+                <div class="card">
+
+                    <div class="c-header" style="padding: 20px;">
+                     <!--    <h2 style="color: #333;">※ <span style="color: #08C17C; font-weight: bold;">네이버</span>로 선택한 업체의 상품이 등록됩니다.</h2> -->
+                    </div> 
+
+                    <div class="wrap">
+
+                       <!-- 탭 -->
+                       <div class="list" >
+                            <ul class="tabs">
+                                <li class="on" id="tabli1"><a href="#tab1">관리자페이지 상품등록</a></li>
+                                <li id="tabli2"><a href="#tab2">네이버 상품등록</a></li>
+                            </ul>
+                        </div>
+
+                        <div id="tab1" class="serrvice_wrapper" style="display: block;">
+                            <form id="product_frm">
+                                <div class="service_info_wrapper">
+                                    <div class="service_info_title" style="margin-bottom: 0;">
+                                        <span></span>
+                                        <span class="require"><i class="xi-check "></i>필수입력</span>
+                                    </div>
+
+                                    <!-- 업체선택 -->
+                                    <div class="input_wrapper">
+                                        <span class="require"><i class="xi-check"></i>업체명</span>
+                                        <select name="businessCode" id="businessCode" class="term_select"
+                                        style="height: 40px; border: 1px solid #cccccc; padding: 0 10px; width:100%;">
+                                            <option value="">선택</option>
+                                          
+                                        </select>
+                                    </div>
+
+                                    <!-- 상품명 -->
+                                    <div class="input_wrapper">
+                                        <span class="require"><i class="xi-check"></i>상품명</span>
+                                        <div class="info_input">
+                                            <input  name="bizItemName" id="bizItemName" type="text"  placeholder="상품명을 입력해주세요. 예) 불꽃야경" >
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 상품기간 -->
+                                    <div class="input_wrapper">
+                                        <span class="require"><i class="xi-check"></i>상품기간</span>
+                                        <div class="info_input" style="display: flex;align-items: center;">
+                                            <input  name="impStartDateTimeStart" id="impStartDateTimeStart" type="date" class="Date" style="margin-right: 10px;">
+                                            ~
+                                            <input type="date" name="impStartDateTimeEnd" id="impStartDateTimeEnd" class="Date" style="margin-left: 10px;">
+                                        </div>
+                                    </div>
+
+                                    <!-- 상세설정 -->
+                                    <div class="intro_report">
+                                        <div class="intro_report_title">
+                                            <span class="require"><i class="xi-check" style="left: -30px;top: 10px;"></i>상세설정</span>
+                                        </div>
+                                        <div class="product_report_wrapper">
+                                            <ul class="product_report_ul">
+                                                <li class="product_report_item">
+                                                 
+                                                    <div class="product_report_sort_wrapper">
+                                                        <span>상세설정 <span class="product_report_cnt">1</span></span>
+                                                        <div class="product_sort_btn">
+                                                            <i class="fa-solid fa-x"></i>
+                                                        </div>
+                                                    </div>
+                            
+                                                    <div class="product_report_contents_wrapper">
+                                                        <div class="product_report_input_wrapper">
+                                                            <span style="width: 60px;  margin-right: 10px;line-height: 3;">상품시간</span>
+                                                            <div class="product_report_input" style="display: flex;">
+                                                                <input  name="time[]" id="time" type="text" placeholder="상품시간을 입력해주세요. 예) 14:00" maxlength="15" >
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="product_report_input_wrapper">
+                                                            <span style="width: 60px;  margin-right: 10px;line-height: 3;">대인</span>
+                                                            <div class="product_report_input" style="display: flex;">
+                                                                <input type="text" name="adultNormalPrice[]" id="adultNormalPrice" placeholder="대인 정상가격을 입력해주세요." style="    margin-right: 10px;">
+                                                                <input type="text" name="adultPrice[]" id="adultPrice" placeholder="대인 할인가격을 입력해주세요.">
+                                                            
+                                                            </div>
+                                                        </div>
+                            
+                                                        <div class="product_report_input_wrapper" >
+                                                            <span style="width: 60px;  margin-right: 10px;line-height: 3;">소인</span>
+                                                            <div class="product_report_input" style="display: flex;">
+                                                                <input  type="text" name="childNormalPrice[]" id="childNormalPrice" placeholder="소인 정상가격을 입력해주세요." style="margin-right: 10px;"></input>
+                                                                <input type="text" name="childPrice[]" id="childPrice" placeholder="소인 할인가격을 입력해주세요.">
+                                                            
+                                                            
+                                                            </div>
+                                                        </div>
+                                                    
+                                                        <div class="product_report_input_wrapper" >
+                                                            <span style="width: 60px;   margin-right: 10px;line-height: 3;">유아</span>
+                                                            <div class="product_report_input" style="display: flex;">
+                                                                <input type="text" name="toddlerNormalPrice[]" id="toddlerNormalPrice" placeholder="유아 정상가격을 입력해주세요." style="margin-right: 10px;"></input>
+                                                                <input type="text" name="toddlerPrice[]" id="toddlerPrice" placeholder="유아 할인가격을 입력해주세요.">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="product_report_input_wrapper">
+                                                            <span style="width: 60px;  margin-right: 10px;line-height: 3;">재고</span>
+                                                            <div class="product_report_input" style="display: flex;">
+                                                                <input  name="stock[]" id="stock" type="text" placeholder="재고를 입력해주세요. " maxlength="15" >
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+
+                                            <div class="product_report_btn">
+                                                <button type="button"><i class="xi-plus-circle-o"></i>상세설정 추가</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                 
+                                </div>
+                            </form>
+
+                            <div class="save_btn">
+                                <button style="width:170p;font-size: 15px;" id="save_btn">관리자페이지 상품등록</button>
+                            </div>
+                        </div>
+                        <style>
+                            #tabli1 {
+                                border-right: 0px;
+                            }
+                            .list li.on a {
+                                color: #fff;
+                                background-color: #749FDB;
+                                box-sizing: border-box;
+                            }
+                           
+                            .list li.on:nth-child(2) a {
+                                color: #fff;
+                                background-color: #08C17C;
+                                box-sizing: border-box;
+                            }
+                           
+                        </style>
+
+                        <div id="tab2" class="serrvice_wrapper" style="display: none;">
+                            <div class="service_info_wrapper">
+                                <div class="service_info_title"style="margin-bottom: 0;">
+                                    <span></span>
+                                    <span class="require"><i class="xi-check "></i>필수입력</span>
+                                </div>
+
+                                <!-- 예약상품명 -->
+                                <div class="input_wrapper">
+                                    <span class="require"><i class="xi-check "></i>예약 상품명</span>
+                                    <div class="info_input">
+                                        <input name="name" id="product_name" type="text" class="limit" placeholder="예약 상품명을 입력해주세요." maxlength="30" >
+                                        <span><span class="char_num">0</span>자<span class="limit_cnt"> / 30자</span></span>
+                                    </div>
+                                </div>
+
+                                <!-- 예약상품소개 -->
+                                <div class="input_wrapper">
+                                    <span>예약 상품 소개</span>
+                                    <div class="info_input">
+                                        <textarea maxlength="1000" minlength="20" name="desc" id="product_desc" cols="30" rows="10" class="limit" placeholder="예약 상품 소개를 입력해주세요."></textarea>
+                                        <span><span class="char_num">0</span>자<span class="limit_cnt"> / 1000자(최소 20자)</span></span>
+                                    </div>
+                                </div>
+
+                                <!-- 대표이미지 -->
+                                <div class="input_wrapper">
+                                    <span>대표 이미지</span>
+                                    <div class="info_input" name="bizItemResources">
+                                        <input  name="resourceUrl" placeholder="대표 상품 이미지 url을 입력하세요." >
+                                    </div>
+
+                                  <!--   <div class="image_file_wrapper">
+                                        <div class="add_image">
+                                            <label for="enterprise_img">파일추가</label>
+                                            <input type="file" multiple id="enterprise_img" name="enterprise_img" />
+                                        </div>
+                                        <ul id="img_list">
+                                            <li class="img_list">
+                                                숨김처리
+                                                 <span>
+                                                    전체<br>업체사진
+                                                </span> 
+                                            </li>
+                                        </ul>
+                                    </div> -->
+                                </div>
+                                
+                                <!-- 예약 상품 이미지 -->
+                                <div class="input_wrapper">
+                                    <span>예약 상품 이미지</span>
+                                    <div class="info_input"  >
+                                        <div class="res_img" name="bizItemResources">
+                                            <input name="resourceUrl" placeholder="예약 상품 이미지 url을 입력하세요." style="margin-bottom: 20px;">
+                                        </div>
+                                        <div class="res_img_btn">
+                                            <button><i class="xi-plus-circle-o"></i>예약 상품 이미지 추가 (최대 120장)</button>
+                                        </div>
+                                    </div>
+
+                                  <!--   <div class="image_file_wrapper" >
+                                        <div class="add_image">
+                                            <label for="res_img">파일추가</label>
+                                            <input type="file" multiple id="res_img" name="res_img" />
+                                        </div>
+                                        <ul id="img_list">
+                                            <li class="img_list">
+                                                 <span>
+                                                    전체<br>업체사진
+                                                </span> 
+                                            </li>
+                                        </ul>
+                                    </div> -->
+                                </div>
+
+                                <!-- 상세소개 -->
+                                <div class="intro_detail">
+                                    <div class="intro_detail_title">
+                                        <span>상세소개</span>
+                                    </div>
+                                    <div class="reveal_wrapper">
+                                        <ul class="reveal_ul">
+                                            <li class="reveal_item">
+                                                <div class="reveal_sort_wrapper">
+                                                    <span>노출순서 <span class="reveal_cnt">1</span></span>
+                                                    <div class="sort_btn">
+                                                        <button class="up"><i class="fa-solid fa-angle-up"></i></button>
+                                                        <button class="down"><i class="fa-solid fa-angle-down"></i></button>
+                                                        <i class="fa-solid fa-x"></i>
+                                                    </div>
+                                                </div>
+                        
+                                                <div class="reveal_contents_wrapper" name="extraDescJson">
+                                                    <div class="reveal_input_wrapper">
+                                                        <span>제목</span>
+                                                        <div class="reveal_input">
+                                                            <input type="text" name="title" id="title" placeholder="제목을 입력해주세요." class="limit" maxlength="40" minlength="3">
+                                                            <span><span class="char_num">0</span>자<span class="limit_cnt"> / 40자 (최소 3자)</span></span>
+                                                        </div>
+                                                    </div>
+                        
+                                                    <div class="reveal_input_wrapper">
+                                                        <span>설명</span>
+                                                        <div class="reveal_input">
+                                                            <textarea type="text" name="context" id="context" placeholder="설명을 입력해주세요." class="limit" maxlength="600" minlength="4"></textarea>
+                                                            <span><span class="char_num">0</span>자<span class="limit_cnt"> / 600자 (최소 4자)</span></span>
+                                                        </div>
+                                                    </div>
+                        
+                                                    <div class="reveal_input_wrapper">
+                                                        <span style="margin-right: 16px; ">이미지</span>
+                                                        <div class="reveal_input" name="images">
+                                                            <input name="url" placeholder="상세소개 이미지 url을 입력하세요." style="margin-bottom: 20px;">
+                                                            <input name="url" placeholder="상세소개 이미지 url을 입력하세요." style="margin-bottom: 20px;">
+                                                            <input name="url" placeholder="상세소개 이미지 url을 입력하세요." style="margin-bottom: 20px;">
+                                                        </div>
+                                                    </div>
+
+                                                  <!--   <div class="reveal_img_wrapper">
+                                                        <div class="add_image">
+                                                            <label for="reveal_img">파일추가</label>
+                                                            <input type="file" multiple name="reveal_img" id="reveal_img">
+                                                            <span class="reveal_notion" >한 장 당 최대 20MB, 최대 3장</span>
+                                                        </div>
+                                                        <ul>
+                                                            <li class="img_list">
+                                                                 <span>
+                                                                    전체<br>업체사진
+                                                                </span> 
+                                                            </li>
+                                                        </ul>
+                                                    </div> -->
+                                                </div>
+
+                                            </li>
+                                        </ul>
+
+                                        <div class="reveal_btn">
+                                            <button><i class="xi-plus-circle-o"></i>상세소개추가</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <!-- 알립니다 -->
+                                <div class="intro_report">
+                                    <div class="intro_report_title">
+                                        <span>알립니다</span>
+                                    </div>
+                                    <div class="reveal_report_wrapper">
+                                        <ul class="reveal_report_ul">
+                                            <li class="reveal_report_item">
+                                                <div class="reveal_report_sort_wrapper">
+                                                    <span>노출순서 <span class="reveal_report_cnt">1</span></span>
+                                                    <div class="report_sort_btn">
+                                                        <button class="up"><i class="fa-solid fa-angle-up"></i></button>
+                                                        <button class="down"><i class="fa-solid fa-angle-down"></i></button>
+                                                        <i class="fa-solid fa-x"></i>
+                                                    </div>
+                                                </div>
+                        
+                                                <div class="reveal_report_contents_wrapper">
+                                                    <div class="reveal_report_input_wrapper">
+                                                        <span>제목</span>
+                                                        <div class="reveal_report_input">
+                                                            <input type="text" name="reveal_report_title" id="reveal_report_title" placeholder="제목을 입력해주세요." class="limit" maxlength="40" minlength="3">
+                                                            <span><span class="char_num">0</span>자<span class="limit_cnt"> / 40자 (최소 3자)</span></span>
+                                                        </div>
+                                                    </div>
+                        
+                                                    <div class="reveal_report_input_wrapper">
+                                                        <span>설명</span>
+                                                        <div class="reveal_report_input">
+                                                            <textarea type="text" name="reveal_report_desc" id="reveal_report_desc" placeholder="설명을 입력해주세요." class="limit" maxlength="600" minlength="4"></textarea>
+                                                            <span><span class="char_num">0</span>자<span class="limit_cnt"> / 600자 (최소 4자)</span></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+
+                                        <div class="reveal_report_btn">
+                                            <button><i class="xi-plus-circle-o"></i>알립니다추가</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 분단위로 환산 -->
+                                <!-- 진행시간 -->
+                                <div class="input_wrapper">
+                                    <span>진행시간</span>
+                                    <div class="pay_select_wrapper">
+                                        <select class="hour-select time-select" id="pro_hour" name="hour runningTime">
+                                        </select>
+                                    </div>
+                                    <div class="pay_select_wrapper">
+                                        <select class="minutes-select time-select" id="pro_minutes" name="minutes runningTime">
+                                        </select>
+                                    </div>
+                                </div>
+                                                           
+                                <!-- 이용가능연령 -->
+                                <div class="age_wrapper">
+                                    <span class="require"><i class="xi-check "></i>이용가능연령</span>
+
+                                    <div class="age_contents_wrapper" >
+
+                                        <!-- 전연령이용가능여부 -->
+                                        <div class="age_select_wrapper">
+                                            <select class="ageRatingSetting" id="ageRatingSetting" name="ageRatingSetting" >
+                                                <option  value="isAllAvailable" name="isAllAvailable" >전체 이용</option>
+                                               <option value="not_isAllAvailable" name="" >특정 연령 이상 이용</option>
+                                            </select>
+                                        </div>
+
+                                        <!-- 특정 연령 이상 이용가능 -->
+                                        <div class="age_select_wrapper ">
+
+                                            <select class="ageRatingType" id="ageRatingType" name="ageRatingType" disabled>
+                                                <option value="age" name="AGE">나이</option>
+                                                <option value="month" name="MONTH">개월 수</option>
+                                            </select>
+                                            
+                                            <select class="ageRating" id="ageRating" name="ageRating" disabled>
+                                                <option value="1">1세 이상</option>
+                                                <option value="2">2세 이상</option>
+                                                <option value="3">3세 이상</option>
+                                                <option value="4">4세 이상</option>
+                                                <option value="5">5세 이상</option>
+                                                <option value="6">6세 이상</option>
+                                                <option value="7">7세 이상</option>
+                                                <option value="8">8세 이상</option>
+                                                <option value="9">9세 이상</option>
+                                                <option value="10">10세 이상</option>
+                                                <option value="11">11세 이상</option>
+                                                <option value="12">12세 이상</option>
+                                                <option value="13">13세 이상</option>
+                                                <option value="14">14세 이상</option>
+                                                <option value="15">15세 이상</option>
+                                                <option value="16">16세 이상</option>
+                                                <option value="17">17세 이상</option>
+                                                <option value="18">18세 이상</option>
+                                                <option value="19">19세 이상</option>
+                                                <option value="20">20세 이상</option>
+                                            </select>
+
+                                            <div class="age_input" >
+                                                <input name="monthRating" type="text" class="monthRating" id="monthRating" maxlength="2" disabled>
+                                                <span>개월 이상 이용가능</span>
+                                            </div>
+                                            
+                                        </div>
+
+                                       
+                                        <div class="age_detail">
+                                            <div class="info_input">
+                                                <textarea name="ageRatingDetail" id="ageRatingDetail" cols="20" rows="10"  class="limit" placeholder="이용가능한 연령 관련해 안내할 상세 내용이 있다면 입력해주세요." maxlength="50" ></textarea>
+                                                <span><span class="char_num">0</span>자<span class="limit_cnt"> / 50자</span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+
+                                 <!-- 예매수량제한 -->
+                                 <div class="input_wrapper" style="margin-bottom: 50px; border-bottom: 1px solid #ccc; padding-bottom: 50px;">
+                                    <span class="require"><i class="xi-check "></i>예매수량</span>
+                                    <div class="reveal_report_wrapper">
+                                        <ul class="reveal_report_ul">
+                                            <li class="reveal_report_item">
+                        
+                                                <div class="reveal_report_contents_wrapper" style="display: flex;">
+                                                    <div class="reveal_report_input_wrapper" style="margin-right: 20px; display: flex; align-items: center;">
+                                                        <span>최소</span>
+                                                        <div class="reveal_report_input">
+                                                            <input type="text" name="reveal_report_title" id="reveal_report_title" placeholder="최소 예매수량을 입력하세요.">
+                                                        </div>
+                                                    </div>
+                        
+                                                    <div class="reveal_report_input_wrapper"style="display: flex; align-items: center;">
+                                                        <span>최대</span>
+                                                        <div class="reveal_report_input">
+                                                            <input type="text" name="reveal_report_title" id="reveal_report_title" placeholder="최대 예매수량을 입력하세요.">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- 주소 -->
+                                <div class="input_wrapper address" style="padding-top: 0; border-top:0;">
+                                    <span>주소</span>
+                                    <div class="info_input">
+                                        <input type="text" placeholder="주소를 입력하세요." id="jibun" name="jibun" readonly>
+                                    <!--  <input type="text" placeholder="도로명" id="add_doro" readonly> -->
+                                    </div>
+                                </div>
+
+                                <!-- 상세위치 -->
+                                <div class="input_wrapper">
+                                    <span>상세위치</span>
+                                    <div class="info_input">
+                                        <textarea name="add_detail detail" id="add_detail detail" cols="30" rows="10" class="limit" placeholder="방문객이 쉽게 찾도록 위치에 대한 상세한 설명 및 교통편을 입력해주세요." maxlength="400"  ></textarea>
+                                        <span><span class="char_num">0</span>자<span class="limit_cnt"> / 400자</span></span>
+                                    </div>
+                                </div>
+
+                                <!-- 주차 -->
+                                <div class="parking_wrapper">
+                                    <span>주차</span>
+                                    <div class="parking_contents_wrapper">
+
+                                        <!-- 주차설정토글 -->
+                                        <div class="parking_set_button_wrapper">
+                                            <div class="parking_set_choose">
+                                                <span class="on">가능</span>
+                                                <span class="off active">불가</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- 주차가능토글 -->
+                                        <div class="parking_button_wrapper">
+                                            <div class="parking_choose">
+                                                <span class="on">가능</span>
+                                                <span class="off active">불가</span>
+                                            </div>
+                                            <div class="parking_pay">
+                                                <input type="radio" name="parking_pay" id="parking_nonfree">
+                                                <label for="parking_nonfree">주차비 유료</label>
+                                                <input type="radio" name="parking_pay" id="parking_free"checked>
+                                                <label for="parking_free">주차비 무료</label>
+                                            </div>
+                                        </div>
+
+                                        <!-- 과금 -->
+                                        <div class="parking_time_pay" style="display: none;">
+
+                                            <div class="over_time_pay">
+                                                <input type="radio" name="parking_time" id="time_over_pay" class="time_over_pay" checked style="margin-left: 0;">
+                                                <label for="time_over_pay">시간당 과금</label>
+                                                <input type="radio" name="parking_time" id="flat_over_pay" class="flat_over_pay">
+                                                <label for="flat_over_pay">정액 과금</label>
+                                            </div>
+                                            
+                                            <div class="first_pay pay_type">
+                                                <div class="pay_title">
+                                                    <span>최초</span>
+                                                    <div >
+                                                        <input type="radio" name="pay_first" id="pay_first_nonfree" checked> 
+                                                        <label for="valet_nonfree" > 유료</label>
+                                                        <input type="radio" name="pay_first" id="pay_first_free">
+                                                        <label for="">무료</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="pay_select_wrapper">
+                                                    <div class="pay_select">
+                                                        <select name="parking_hour" id="" class="parking_hour">
+                                                            <option value="00">00시간</option>
+                                                            <option value="01">01시간</option>
+                                                            <option value="02">02시간</option>
+                                                            <option value="03">03시간</option>
+                                                            <option value="04">04시간</option>
+                                                            <option value="05">05시간</option>
+                                                            <option value="06">06시간</option>
+                                                            <option value="07">07시간</option>
+                                                            <option value="08">08시간</option>
+                                                            <option value="09">09시간</option>
+                                                            <option value="10">10시간</option>
+                                                            <option value="11">11시간</option>
+                                                            <option value="12">12시간</option>
+                                                        </select>
+                    
+                                                        <select name="parking_minute" id="" class="parking_minute">
+                                                            <option value="00">00분</option>
+                                                            <option value="10">10분</option>
+                                                            <option value="20">20분</option>
+                                                            <option value="30">30분</option>
+                                                            <option value="40">40분</option>
+                                                            <option value="50">50분</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div>
+                                                        <input type="text" class="won" name="won" id="time_over_pay_price" >
+                                                        <span class="unit_won">원</span>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="over_pay pay_type">
+                                                <div class="pay_title">
+                                                    <span>추가요금</span>
+                                                </div>
+
+                                                <div class="pay_select_wrapper">
+                                                    <div class="pay_select">
+                                                        <select name="parking_hour" id="" class="parking_hour">
+                                                            <option value="00">00시간</option>
+                                                            <option value="01">01시간</option>
+                                                            <option value="02">02시간</option>
+                                                            <option value="03">03시간</option>
+                                                            <option value="04">04시간</option>
+                                                            <option value="05">05시간</option>
+                                                            <option value="06">06시간</option>
+                                                            <option value="07">07시간</option>
+                                                            <option value="08">08시간</option>
+                                                            <option value="09">09시간</option>
+                                                            <option value="10">10시간</option>
+                                                            <option value="11">11시간</option>
+                                                            <option value="12">12시간</option>
+                                                        </select>
+                    
+                                                        <select name="parking_minute" id="" class="parking_minute">
+                                                            <option value="00">00분</option>
+                                                            <option value="10">10분</option>
+                                                            <option value="20">20분</option>
+                                                            <option value="30">30분</option>
+                                                            <option value="40">40분</option>
+                                                            <option value="50">50분</option>
+                                                        </select>
+                                                        
+                                                    </div>
+
+                                                    <div>
+                                                        <input type="text"  class="won" name="won">
+                                                        <span class="unit_won">원</span>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="total_pay pay_type">
+                                                <div class="pay_title">
+                                                    <span>최대</span>
+                                                </div>
+                                                <input type="text"  class="won" name="won">
+                                                <span class="unit_won">원</span>
+                                            </div>
+
+                                            
+                                        </div>
+
+                                        <!-- 정액과금 -->
+                                        <div class="flat_pay pay_type"style="display: none;">
+                                            <div class="pay_title">
+                                                <span>1회 주차시</span>
+                                            </div>
+                                            <input type="text" class="won" name="won">
+                                            <span class="unit_won">원</span>
+                                        </div>
+
+                                        <!-- 발렛 파킹 -->
+                                        <div class="valet_wrapper">
+                                            <div class="valet_pay_wrapper">
+                                                <div class="valet_title">
+                                                    <span>발렛파킹</span>
+                                                </div>
+                    
+                                                <div class="valet_cost">
+                                                    <input type="radio" name="valet_pay" id="valet_nonfree" > 
+                                                    <label for="valet_nonfree"> 유료</label>
+                                                    <div class="valet_pay_input">
+                                                        <input type="text" class="won" name="won" id="valet_price" disabled>
+                                                        <span class="unit_won">원</span>
+                                                    </div>
+                                                    <input type="radio" name="valet_pay" id="valet_free" >
+                                                    <label for="valet_free"> 무료</label>
+                                                    <input type="radio" name="valet_pay" id="valet_no" checked>
+                                                    <label for="valet_no"> 불가</label>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="valet_detail">
+                                                <div class="valet_detail_title">
+                                                    <span>상세안내</span>
+                                                </div>
+                                                
+                                                <div class="info_input">
+                                                    <textarea name="valet_detail parkingInfoDetail" id="valet_detail parkingInfoDetail" cols="30" rows="10"  class="limit" placeholder="주차 관련 안내할 상세 내용이 있다면 입력해주세요." maxlength="400" ></textarea>
+                                                    <span><span class="char_num">0</span>자<span class="limit_cnt"> / 400자</span></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <!-- 예약문의 -->
+                                <div class="reserve_phone ">
+                                    <div class="phone_title">
+                                        <span>연락처</span>
+                                    </div>
+
+                                    <div class="phone_input">
+                                        <input type="text" class="phone" value="010" maxlength="4" name="phone" id="phone_first">
+                                        <span>-</span>
+                                        <input type="text" class="phone" maxlength="4" name="phone" id="phone_middle">
+                                        <span>-</span>
+                                        <input type="text" class="phone" maxlength="4" name="phone" id="phone_last">
+                                    </div>
+                                </div>
+
+                                 <!-- 웹사이트 -->
+                                 <div class="input_wrapper">
+                                    <span class="require"><i class="xi-check "></i>웹사이트</span>
+
+                                    <div class="info_input">
+                                        <input type="text" placeholder="웹사이트를 입력해주세요." name="web_site" id="web_site">
+                                    </div>
+                                </div>
+
+                                <!-- 잔여재고 -->
+                                <div class="input_wrapper">
+                                    <span>잔여재고 노출</span>
+                                    <!-- 재고노출 토글 -->
+                                    <div class="stock_button_wrapper">
+                                        <div class="stock_set_choose">
+                                            <span class="on">ON</span>
+                                            <span class="off active">OFF</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>    
+                            
+                            
+                        <div class="save_btn">
+                            <button type="button" style="width: 170px; background-color: #08C17C;" onclick="Create()">네이버로 상품등록</button>
+                        </div>
+                        </div>
+                    </div>
+                  
+                </div>
+            </div>
+        </section>
+
+        <footer data-include="../inc/footer.html"></footer>
+
+    </section>
+       
+     <!-- Page Loader -->
+     <div class="page-loader palette-Teal bg">
+        <div class="preloader pl-xl pls-white">
+          <!--   <svg class="pl-circular" viewBox="25 25 50 50">
+                <circle class="plc-path" cx="50" cy="50" r="20"/>
+            </svg> -->
+        </div>
+    </div>
+
+
+
+     <!-- Javascript Libraries -->
+     <script src="vendors/bower_components/jquery/dist/jquery.min.js"></script>
+     <script src="vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+     
+     <script src="vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+     <script src="vendors/bower_components/Waves/dist/waves.min.js"></script>
+     <script src="vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
+
+     <!-- Placeholder for IE9 -->
+     <!--[if IE 9 ]>
+         <script src="vendors/bower_components/jquery-placeholder/jquery.placeholder.min.js"></script>
+     <![endif]-->
+
+             <script src="{{ url_for('static', filename='common/js/functions.js') }}" > </script>
+     <script src="{{ url_for('static', filename='common/js/action.js') }}" > </script>
+     <script src="{{ url_for('static', filename='common/js/demo.js') }}" > </script>     <script src="js/common_include.js"></script>  
+
+    <script src="https://kit.fontawesome.com/70c929d7d4.js" crossorigin="anonymous"></script>
+    <script src="css/common/plugins/jQuery/jquery-3.6.0.min.js"></script>
+    <script src="http://code.jquery.com/jquery-latest.js "></script>
+    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" /> 
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script> 
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
+
+    <script src="js/insert.js"></script>
+<!--     <script src="js/api_biz.js"></script> -->
+    <script src="js/api_businesses.js"></script>
+    <script src="{{ url_for('static', filename='js/common/login_check.js') }}" > </script>
+    <script src="js/product_insert.js"></script>
+
+</body>
+</html>    

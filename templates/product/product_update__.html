@@ -1,0 +1,244 @@
+<!--#include virtual = "/inc/dbconfig.asp"--> 
+<!DOCTYPE html>
+<!--[if IE 9 ]><html class="ie9"><![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>해마_상품수정</title>
+
+    <!-- Vendor CSS -->
+    <link href="vendors/bower_components/animate.css/animate.min.css" rel="stylesheet">
+    <link href="vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css" rel="stylesheet">
+    <link href="vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet">
+    <link href="vendors/bower_components/google-material-color/dist/palette.css" rel="stylesheet">
+        
+    <!-- CSS -->
+    <link href="css/app.min.1.css" rel="stylesheet">
+    <link href="css/app.min.2.css" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="css/common/css/reset.css">
+    <link rel="stylesheet" href="css/common/css/fonts.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+
+    <link rel="stylesheet" href="css/insert.css">
+    <link rel="stylesheet" href="css/easybooking.css">
+
+    <script src="css/common/plugins/jQuery/jquery-3.6.0.min.js"></script>  
+</head>
+
+<body data-ma-header="teal">
+    <header data-include="../inc/header.html"></header>
+
+    <section id="main">
+        <aside data-include="../inc/aside.html"></aside>
+
+        <section id="content">
+            <div class="container">
+              
+                <div class="card">
+
+                    <div class="c-header" style="padding: 20px;">
+                     <!--    <h2 style="color: #333;">※ <span style="color: #08C17C; font-weight: bold;">네이버</span>로 선택한 업체의 상품이 등록됩니다.</h2> -->
+                    </div> 
+
+                    <div class="wrap">
+
+                       <!-- 탭 -->
+                       <div class="list" >
+                            <ul class="tabs">
+                                <li class="on" id="tabli1" style="width: 100%;"><a href="#tab1">관리자페이지 상품수정</a></li>
+                            </ul>
+                        </div>
+
+                        <div id="tab1" class="serrvice_wrapper">
+                            <form id="product_frm">
+                                <input type="hidden" id="id" name="id"/>
+                                <div class="service_info_wrapper">
+                                    <div class="service_info_title" style="margin-bottom: 0;">
+                                        <span></span>
+                                        <span class="require"><i class="xi-check "></i>필수입력</span>
+                                    </div>
+
+                                    <!-- 업체선택 -->
+                                    <div class="input_wrapper">
+                                        <span class="require"><i class="xi-check"></i>업체명</span>
+                                        <input name="businessName" id="businessName" class="term_select"
+                                        style="height: 40px; border: 1px solid #cccccc; padding: 0 10px; width:100%" readonly>                                          
+                                        </input>
+                                    </div>
+
+                                    <!-- 상품명 -->
+                                    <div class="input_wrapper">
+                                        <span class="require"><i class="xi-check"></i>상품명</span>
+                                        <div class="info_input">
+                                            <input  name="bizItemName" id="bizItemName" type="text"  placeholder="상품명을 입력해주세요. 예) 불꽃야경" >
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 네이버코드 -->
+                                    <!-- <div class="input_wrapper">
+                                        <span class="require"><i class="xi-check"></i>네이버상품코드</span>
+                                        <div class="info_input">
+                                            <input  name="s_name" id="service_name" type="text" class="limit" placeholder="네이버상품코드를 입력해주세요. 예)4226196" maxlength="30" >
+                                            <span><span class="char_num">0</span>자<span class="limit_cnt"> / 30자</span></span>
+                                        </div>
+                                    </div> -->
+                                
+                                    <!-- 상품기간 -->
+                                    <div class="input_wrapper">
+                                        <span class="require"><i class="xi-check"></i>상품기간</span>
+                                        <div class="info_input" style="display: flex;align-items: center;">
+                                            <input  name="impStartDateTimeStart" id="impStartDateTimeStart" type="date" class="Date" style="margin-right: 10px;">
+                                            ~
+                                            <input type="date" name="impStartDateTimeEnd" id="impStartDateTimeEnd" class="Date" style="margin-left: 10px;">
+                                        </div>
+                                    </div>
+
+                                      <!-- 상세설정 -->
+                                      <div class="intro_report">
+                                        <div class="intro_report_title">
+                                            <span class="require"><i class="xi-check" style="left: -30px;top: 10px;"></i>상세설정</span>
+                                        </div>
+                                        <div class="product_report_wrapper">
+                                            <ul class="product_report_ul">
+                                                <li class="product_report_item">
+                                                    <input class="hiddenBid" type="hidden" name="bidId[]" />
+                                                    <div class="product_report_sort_wrapper">
+                                                        <span>상세설정 <span class="product_report_cnt">1</span></span>
+                                                        <div class="product_sort_btn">
+                                                            <i class="fa-solid fa-x"></i>
+                                                        </div>
+                                                    </div>
+                            
+                                                    <div class="product_report_contents_wrapper">
+                                                        <div class="product_report_input_wrapper">
+                                                            <span style="width: 60px;  margin-right: 10px;line-height: 3;">상품시간</span>
+                                                            <div class="product_report_input" style="display: flex;">
+                                                                <input  name="time[]" id="time" type="text" placeholder="상품시간을 입력해주세요. 예) 14:00" maxlength="15" >
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="product_report_input_wrapper">
+                                                            <span style="width: 60px;  margin-right: 10px;line-height: 3;">대인</span>
+                                                            <div class="product_report_input" style="display: flex;">
+                                                                <input type="text" name="adultNormalPrice[]" id="adultNormalPrice" placeholder="대인 정상가격을 입력해주세요." style="    margin-right: 10px;">
+                                                                <input type="text" name="adultPrice[]" id="adultPrice" placeholder="대인 할인가격을 입력해주세요.">
+                                                            
+                                                            </div>
+                                                        </div>
+                            
+                                                        <div class="product_report_input_wrapper" >
+                                                            <span style="width: 60px;  margin-right: 10px;line-height: 3;">소인</span>
+                                                            <div class="product_report_input" style="display: flex;">
+                                                                <input  type="text" name="childNormalPrice[]" id="childNormalPrice" placeholder="소인 정상가격을 입력해주세요." style="margin-right: 10px;"></input>
+                                                                <input type="text" name="childPrice[]" id="childPrice" placeholder="소인 할인가격을 입력해주세요.">
+                                                            
+                                                            
+                                                            </div>
+                                                        </div>
+                                                    
+                                                        <div class="product_report_input_wrapper" >
+                                                            <span style="width: 60px;   margin-right: 10px;line-height: 3;">유아</span>
+                                                            <div class="product_report_input" style="display: flex;">
+                                                                <input type="text" name="toddlerNormalPrice[]" id="toddlerNormalPrice" placeholder="유아 정상가격을 입력해주세요." style="margin-right: 10px;"></input>
+                                                                <input type="text" name="toddlerPrice[]" id="toddlerPrice" placeholder="유아 할인가격을 입력해주세요.">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="product_report_input_wrapper">
+                                                            <span style="width: 60px;  margin-right: 10px;line-height: 3;">재고</span>
+                                                            <div class="product_report_input" style="display: flex;">
+                                                                <input  name="stock[]" id="stock" type="text" placeholder="재고를 입력해주세요. " maxlength="15" >
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+
+                                            <div class="product_report_btn">
+                                                <button type="button"><i class="xi-plus-circle-o"></i>상세설정 추가</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>.
+                            </form>
+
+                            <div class="save_btn">
+                                <button style="width:170px;font-size: 15px;" id="update_btn">관리자페이지 상품수정</button>
+                            </div>
+                        </div>
+
+                        <style>
+                            #tabli1 {
+                                border-right: 0px;
+                            }
+                            .list li.on a {
+                                color: #fff;
+                                background-color: #749FDB;
+                                box-sizing: border-box;
+                            }
+                           
+                            .list li.on:nth-child(2) a {
+                                color: #fff;
+                                background-color: #08C17C;
+                                box-sizing: border-box;
+                            }
+                           
+                        </style>
+
+                    </div>
+                  
+                </div>
+            </div>
+        </section>
+
+        <footer data-include="../inc/footer.html"></footer>
+
+    </section>
+       
+     <!-- Page Loader -->
+     <div class="page-loader palette-Teal bg">
+        <div class="preloader pl-xl pls-white">
+          <!--   <svg class="pl-circular" viewBox="25 25 50 50">
+                <circle class="plc-path" cx="50" cy="50" r="20"/>
+            </svg> -->
+        </div>
+    </div>
+
+
+
+     <!-- Javascript Libraries -->
+     <script src="vendors/bower_components/jquery/dist/jquery.min.js"></script>
+     <script src="vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+     
+     <script src="vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+     <script src="vendors/bower_components/Waves/dist/waves.min.js"></script>
+     <script src="vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
+
+     <!-- Placeholder for IE9 -->
+     <!--[if IE 9 ]>
+         <script src="vendors/bower_components/jquery-placeholder/jquery.placeholder.min.js"></script>
+     <![endif]-->
+
+             <script src="{{ url_for('static', filename='common/js/functions.js') }}" > </script>
+     <script src="{{ url_for('static', filename='common/js/action.js') }}" > </script>
+     <script src="{{ url_for('static', filename='common/js/demo.js') }}" > </script>     <script src="js/common_include.js"></script>  
+
+    <script src="https://kit.fontawesome.com/70c929d7d4.js" crossorigin="anonymous"></script>
+    <script src="css/common/plugins/jQuery/jquery-3.6.0.min.js"></script>
+    <script src="http://code.jquery.com/jquery-latest.js "></script>
+    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" /> 
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script> 
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
+
+    <script src="js/insert.js"></script>
+<!--     <script src="js/api_biz.js"></script> -->
+    <script src="js/api_businesses.js"></script>
+    <script src="{{ url_for('static', filename='js/common/login_check.js') }}" > </script>
+    <script src="js/product_update.js"></script>
+
+</body>
+</html>    

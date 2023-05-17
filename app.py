@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 from py import member
 from py import biz
+from py import product
 
 import jinja2
 
@@ -264,6 +265,37 @@ def biz_delete():
 
 
 
+
+# ============================================================================= #
+# 상품관리 - product
+# ============================================================================= #
+
+# 상품목록 페이지
+@app.route("/product/list")
+def view_product_list():
+    product_list = product.select_product_list()
+    return render_template('product/product_list.html', product_list = product_list)
+
+# 네이버 상품목록 페이지
+@app.route("/product/naver/list")
+def view_product_naver_list():
+    return render_template('product/product_naver_list.html')
+
+# 상품등록 페이지
+@app.route("/product/insert")
+def view_product_insert():
+    return render_template('product/product_insert.html')
+
+# 네이버 상품등록 페이지
+@app.route("/product/naver/insert")
+def view_product_naver_insert():
+    return render_template('product/product_naver_insert.html')
+
+# 상품 조회
+@app.route("/v1/product/list")
+def select_product_list():
+    res = product.select_product_list()
+    return res
 
 
 

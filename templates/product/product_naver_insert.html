@@ -1,0 +1,883 @@
+<!--#include virtual = "/inc/dbconfig.asp"--> 
+<!DOCTYPE html>
+<!--[if IE 9 ]><html class="ie9"><![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>해마여행사</title>
+
+    <!-- Vendor CSS -->
+    <link href="{{ url_for('static', filename='vendors/bower_components/animate.css/animate.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='vendors/bower_components/google-material-color/dist/palette.css') }}" rel="stylesheet">
+        
+    <!-- CSS -->
+    <link href="{{ url_for('static', filename='css/app.min.1.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/app.min.2.css') }}" rel="stylesheet">
+
+    <link href="{{ url_for('static', filename='css/common/css/reset.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/common/css/fonts.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+
+    <link href="{{ url_for('static', filename='css/insert.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/easybooking.css') }}" rel="stylesheet">
+
+    <!-- JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.0/moment.min.js"></script>
+
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function () {
+            buildCalendar();
+        });
+    </script>
+
+    <style>
+        .btn:not(.btn-link) {
+            box-shadow: none;
+        }
+    </style>
+</head>
+
+<body data-ma-header="teal">
+    {% include './inc/header.html' %}
+
+    <section id="main">
+        {% include './inc/aside.html' %}
+
+
+        <section id="content">
+            <div class="container">
+                <!-- <div class="c-header">
+                    <h2>Table</h2>
+                </div> -->
+
+                <div class="card">
+
+                    <div class="c-header" style="padding: 20px;">
+                        <h2 style="color: #333;">※ <span style="color: #08C17C; font-weight: bold;">네이버</span>로 선택한 업체 상품의 가격과 일정이 등록됩니다.</h2>
+                    </div> 
+
+                    <div class="card-header">
+                         <!-- <h2>상품 등록<small></small></h2> -->
+                    </div>
+
+
+                    <div class="wrap">
+
+                        <!-- 탭 -->
+                        <!-- <div class="list" >
+                            <ul class="tabs">
+                                <li class="on" id="tabli1" style="border-right: 0;"><a href="#tab1">상품정보</a></li>
+                                <li id="tabli12"><a  href="#tab2">일정/가격</a></li>
+                            </ul>
+                        </div> -->
+
+
+                        <!-- 가격/일정 탭 -->
+                        <div id="tab2" class="serrvice_wrapper" style="margin: 25px 0;">
+                            
+                             <!-- 상품선택 -->
+                             <h5 class="mt0" style="margin-bottom: 20px;">
+                                상품 선택 후, 전체 가격을 설정할 수 있습니다.
+                            </h5>
+                             
+                            <div class="input_wrapper">
+                                <span class="require"><i class="xi-check"></i>상품선택</span>
+                                <select id="product_select" name="product_select" class="term_select"  
+                                        onchange="onChangeProductSelectBox()"
+                                        style="height: 40px; border: 1px solid #cccccc; padding: 0 10px; margin-bottom: 17px; width:100%;">
+                                    <option value="" selected>상품선택</option>
+                                </select>
+                            </div>
+
+                            <div class="service_info_wrapper">
+
+                                <h5 class="mt0">
+                                    예약 상품에 사용할 전체 가격을 설정합니다.설정된 가격은 일정에서 생성한 회차 별로 적용해 사용할 수 있습니다.
+                                </h5>
+                                <div class="panel panel-default panel-btn-icon mb40">
+
+                                    <div class="panel-body">
+
+                                        <form class="form-horizontal ng-pristine ng-valid" role="form">
+
+                                            <div class="mb15 bold">가격분류
+                                                <button type="button" id="priceAdd" class="btn btn-sm btn-info ml10" > 추가</button>
+                                            </div>
+
+                                            <div class="col-sm-12 p0">
+                                                <div class="price-table">
+                                                    <table class="table-bordered">
+
+                                                        <!-- <caption>가격분류</caption> -->
+                                                        <colgroup>
+                                                            <col style="width:250px">
+                                                            <col style="width:110px">
+                                                            <col style="width:110px">
+                                                            <col style="width:400px">
+                                                            <col style="width:65px">
+                                                            <col style="width:65px">
+                                                        </colgroup>
+
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">가격분류명</th>
+                                                                <th scope="col">판매가</th>
+                                                                <th scope="col">정가</th>
+                                                                <th scope="col">설명</th>
+                                                                <th scope="col">수정</th>
+                                                                <th scope="col">삭제</th>
+                                                            </tr>
+                                                        </thead>
+
+                                                        <tbody id="price_tbody"> </tbody>
+                                                    </table>
+
+                                                </div>
+                                            </div>
+
+                                        </form>
+
+                                    </div>
+                                    
+                                </div>
+                            </div>
+
+                             <!-- 달력 시작 -->
+                           
+                             <div class="panel panel-default mb0">
+                                <h5 class="mt0 ">예약 상품의 일정 정보를 설정합니다. 회차를 설정하고 회차별 가격/재고/옵션을 관리할 수 있습니다.</h5>
+                                
+                               
+                                 <div class="panel-body">
+                                     <div class="mb5 pt5 pb5 clearfix"><span  class="inblock pull-left pr20 bold">상품기간</span>
+                                         <p class="inblock m0 col-middle " ng-if="term === 0"><strong>상품 회차를 추가해 주세요</strong></p>
+                                     </div>
+                                     <div class="mb15">
+                                         <span class="inblock pr20 bold">상품회차</span>
+                                         <button type="button" class="btn btn-sm btn-info" id="seatSlotRepetitionAdd" onclick="addbtn()">반복추가</button>
+                                         <button type="button" class="btn btn-sm btn-info" id="seatSlotRepetitionDelete" onclick="delbtn()">반복삭제</button>
+                                     </div>
+                                     <div class="panel panel-default mb0" style="border: 1px solid #ddd;">
+                                         <div class="panel-heading">
+                                             <h6 class="panel-title panel-title-resp">달력의 원하는 날짜를 클릭 시 회차 생성, 회차 클릭 시 수정할 수 있습니다.</h6>
+                                             <div class="badge-box">
+                                                 <div class="badge-con">
+                                                     <span class="badge noround bordered bg-success">&nbsp;</span>
+                                                     <span class="badge-info fs12 mr15 ">예약 가능</span>
+                                                 </div>
+                                                 <div class="badge-con">
+                                                     <span class="badge noround bordered bg-info">&nbsp;</span>
+                                                     <span class="badge-info fs12 mr0">선택</span>
+                                                 </div>
+                                             </div>
+                                         </div>
+                                         <div class="text-center">
+                                            <div class="table-responsive bookingfarm-calendar _bookingfarm_calendar">
+                                                <table class="scriptCalendar table table-bordered table-hover">
+                                                    <colgroup>
+                                                        <col style="width:14.28%">
+                                                        <col style="width:14.28%">
+                                                        <col style="width:14.28%">
+                                                        <col style="width:14.28%">
+                                                        <col style="width:14.28%">
+                                                        <col style="width:14.28%">
+                                                        <col style="width:14.28%">
+                                                    </colgroup>
+                                                    <thead>
+                                                        <tr>
+                                                            <td colspan="7">
+                                                                <a class="btn btn-calendar-white btn-xs hidden-xs"
+                                                                    onClick="prevCalendar();" title="이전년도">
+                                                                    &#60;&#60;
+                                                                </a> 
+                                                                <span id="calYear">YYYY</span>년
+                                                                <span id="calMonth">MM</span>월
+                                                                <a class="btn btn-calendar-white btn-xs btn-xs-only"
+                                                                    onClick="nextCalendar();" title="이전달">
+                                                                    &#62;&#62;
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                    
+                                                        <tr>
+                                                            <th abbr="일요일" scope="col" class="center-align vert-align days sunday">일</th>
+                                                            <th abbr="월요일" scope="col" class="center-align vert-align days">월</th>
+                                                            <th abbr="화요일" scope="col" class="center-align vert-align days">화</th>
+                                                            <th abbr="수요일" scope="col" class="center-align vert-align days">수</th>
+                                                            <th abbr="목요일" scope="col" class="center-align vert-align days">목</th>
+                                                            <th abbr="금요일" scope="col" class="center-align vert-align days">금</th>
+                                                            <th abbr="토요일" scope="col" class="center-align vert-align days">토</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="seat-calendar-body"></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                     </div>
+                                 </div>
+                             </div>
+                             <!-- 달력 끝 -->
+
+                            <!-- 예약오픈 시작 -->
+                          <!--   <div class="panel panel-default">
+                                <div class="panel-heading" style="padding: 15px;
+                                border: 1px solid #ddd;">
+                                    <h6 style="margin-bottom: 10px;">예약 오픈시각을 설정하시면 "예약 오픈일 2018.12.31(수) 13:00"와 같은 안내가 예약페이지에
+                                        노출되며 고객은 해당시각 이후부터 예약 가능합니다.</h6>
+                                    <h6 >운영도구에서 공연/전시 정보 노출하기를 설정 한 경우 네이버 공연 검색결과에 한하여 오픈 예정정보가 노출됩니다.</h6>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="col-sm-3" style="padding-top: 5px">
+                                        <h6 class="panel-title pull-left">예약 오픈시각 설정</h6>
+                                        <div class="col-sm-2">
+                                            <div class="bootstrap-switch-off bootstrap-switch-mini bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-animate"
+                                                style="width: 67px;">
+                                                <div class="bootstrap-switch-container" style="width: 97px; margin-left: -32px;">
+                                                    <span class="bootstrap-switch-handle-on bootstrap-switch-success" style="width: 32px;">ON</span>
+                                                    <span class="bootstrap-switch-label" style="width: 33px;">&nbsp;</span>
+                                                    <span class="bootstrap-switch-handle-off bootstrap-switch-default" style="width: 32px;">OFF</span>
+                                                    <input type="checkbox"
+                                                        ng-model="bookableSetting.isUseOpen" ng-true-value="1"
+                                                        ng-false-value="0" bs-switch="" data-size="mini"
+                                                        data-on-color="success" data-on-text="ON" data-off-text="OFF"
+                                                        title="판매 시작 시간 설정 여부선택" onchange="onOpenDateChange($event)"
+                                                        class="ng-pristine ng-untouched ng-valid">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="pull-right"></div>
+                                </div>
+                            </div> -->
+                            <!-- 예약오픈 끝 -->    
+
+                            
+                            <!-- 가격 추가 모달창 --------------------------------------------->
+                            <div class="price-modal fade" id="addPrice"  tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="price-modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">가격 분류 추가</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                                <span class="help-txt"><em class="text-danger">*</em> 필수입력사항</span>
+                                            
+                                                <!-- 가격분류명 -->
+                                                <div class="input_wrapper">
+                                                    <span>
+                                                        가격분류명
+                                                        <em class="text-danger">*<span class="sr-only">필수입력사항</span></em>
+                                                    </span>
+                                                    <div class="info_input">
+                                                        <input type="text" id="seat_price_type_name" name="seat_price_type_name" required="" minlength="1" maxlength="15" class="limit"
+                                                        placeholder="가격분류명을 입력해 주세요.">
+                                                        <span><span class="char_num">0</span>자<span class="limit_cnt"> / 15자</span></span>
+                                                    </div>
+                                                </div>
+
+
+                                                <!-- 판매가 -->
+                                                <div class="input_wrapper">
+                                                    <span>
+                                                        판매가
+                                                        <em class="text-danger">*<span class="sr-only">필수입력사항</span></em>
+                                                    </span>
+                                                    <div class="valet_pay_input">
+                                                        <input type="text" class="won" name="seat_price" id="seat_price">
+                                                        <span class="unit_won">원</span>
+                                                    </div>
+                                                </div>
+
+                                                <!-- 정가 -->
+                                                <div class="input_wrapper">
+                                                    <span>정가</span>
+                                                    <div class="valet_pay_input">
+                                                        <input type="text" class="won" name="normalPrice" id="normalPrice">
+                                                        <span class="unit_won">원</span>
+                                                    </div>
+                                                </div>
+
+                                                <!-- 설명 -->
+                                                <div class="input_wrapper">
+                                                    <span>설명</span>
+                                                    <div class="info_input">
+                                                        <textarea id="seat_price_type_desc" name="seat_price_type_desc"
+                                                            rows="2" ng-model="priceType.desc"
+                                                            minlength="3" maxlength="30" placeholder="설명을 입력해 주세요." class="limit"
+                                                            pattern="/^[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9\u4E00-\u9FD5\u3040-\u30ff\u31f0-\u31ff\s\(\)\_\-\:\&amp;\!\[\]\%\.\,\+\~\@\*\^\'\/\?\²\℃\※\<\>]*$/"></textarea>
+                                                        <span><span class="char_num">0</span>자<span class="limit_cnt"> / 30자</span></span>
+                                                    </div>
+                                                </div>
+
+                                                <!-- 버튼 -->
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-primary btn-sm" id="prices_add" onclick="priceCreate()">추가하기</button>
+                                                    <button type="button" class=".price-modal-close btn btn-default btn-sm" data-dismiss="modal" onclick="onCloseBtnClick()">닫기</button>
+                                                </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 가격 추가 모달창 END --------------------------------------------->
+
+                            
+                            <!-- 상품 회차 반복 추가 모달창 --------------------------------------------->
+                            <div class="price-modal fade"  id="addSeatSlotRepetition"  tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="price-modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">상품 회차 반복 추가</h4>
+                                        </div>
+                                        <div class="modal-body modal-min-height">
+
+                                            <!-- 기간 --> 
+                                            <div class="input_wrapper">
+                                                <span>기간</span>
+                                                <p>
+                                                <div class="info_input">
+                                                    <input type="date" id="slot_date" />
+                                                </div>
+                                                <span style="text-align:center; text-indent: 0; width: 30px;"> ~ </span>
+                                                <div class="info_input">
+                                                    <input type="date" id="slot_endDate" />
+                                                </div>
+                                                </p>
+                                                
+                                                <!-- <small class="text-danger hide" onshow="checkDatePicker() == !isOverRange">기간의 시작일은 종료일 이전 날짜로 선택해야 합니다.</small>
+                                                <small class="text-danger hide" onshow="checkDatePicker() == isOverRange">시작일 ~ 종료일 기간은 최대 1년까지 입력할 수 있습니다.</small> -->
+                                            </div>
+
+                                            <!-- 반복 설정 - select--> 
+                                            <div class="input_wrapper">
+                                                <span>반복설정</span>
+
+                                                <div class="pay_select_wrapper" style="margin-right: 10px;">
+                                                    <select style="width: 200px;" id="slot_repeat"  title="반복 설정" onchange="onRepeatDayChange(event)">
+                                                        <!-- ng-init="slot.repeat=&#39;0000000&#39;" -->
+                                                        <option value="0000000">사용자 선택</option>
+                                                        <option value="1111100" 
+                                                        ng-repeat="(key, value) in repeatType.sampleList">
+                                                        매주 일 ~ 목요일</option>
+                                                        <option value="1111111" ng-repeat="(key, value) in repeatType.sampleList" >매일</option>
+                                                        <option value="0000010" ng-repeat="(key, value) in repeatType.sampleList" >매주 금요일</option>
+                                                        <option value="0000001" ng-repeat="(key, value) in repeatType.sampleList" >매주 토요일</option>
+                                                    </select>
+                                                    <span>마다 반복 설정</span>
+                                                </div>
+
+                                            </div>
+
+                                            <!-- 반복 설정 - 요일  -->
+                                            <div class="input_wrapper">
+                                                <div class="info_input" style="width: 30%; display: flex; align-items: center;margin-left: 150px;">
+                                                    <div class="btn-group" role="group">
+                                                        <!-- ng-repeat="item in convertStrToArr(slot.validWeekStr) track by this.index" -->
+                                                        <button type="button" class="btn btn-sm btn-default ng-binding" 
+                                                        onclick="onRepeatDayBtnClick(event, ($(this).index() + 1) % 7)">월</button>
+                                                    </div>
+                                                    <div class="btn-group" role="group">
+                                                        <button type="button" class="btn btn-sm btn-default ng-binding"
+                                                            onclick="onRepeatDayBtnClick(event, ($(this).index() + 1) % 7)">화</button>
+                                                    </div>
+                                                    <div class="btn-group" role="group">
+                                                        <button type="button" class="btn btn-sm btn-default ng-binding"
+                                                            onclick="onRepeatDayBtnClick(event, ($(this).index() + 1) % 7)">수</button>
+                                                    </div>
+
+                                                    <div class="btn-group" role="group">
+                                                    <!--  ng-repeat="item in convertStrToArr(slot.validWeekStr) track by this.index"> -->
+                                                        <button type="button" class="btn btn-sm btn-default ng-binding"
+                                                            onclick="onRepeatDayBtnClick(event, ($(this).index() + 1) % 7)">목</button>
+                                                    </div>
+                                                    <div class="btn-group" role="group">
+                                                        <button type="button" class="btn btn-sm btn-default ng-binding"
+                                                            onclick="onRepeatDayBtnClick(event, ($(this).index() + 1) % 7)">금</button>
+                                                    </div>
+                                                    <div class="btn-group" role="group">
+                                                        <button type="button" class="btn btn-sm btn-default ng-binding"
+                                                            onclick="onRepeatDayBtnClick(event, ($(this).index() + 1) % 7)">토</button>
+                                                    </div>
+                                                    <div class="btn-group" role="group">
+                                                        <button type="button" class="btn btn-sm btn-default ng-binding"
+                                                            onclick="onRepeatDayBtnClick(event, ($(this).index() + 1) % 7)">일</button>
+                                                    </div>
+                                                    <!-- <small class="text-gray" ng-show="slot.validWeekStr === &#39;0000000&#39;"></small> -->
+                                                </div>
+                                            </div>
+
+
+                                            <!-- 회차 시간 --> 
+                                            <div class="input_wrapper">
+                                                <span>회차시간</span>
+                                                <div class="pay_select_wrapper">
+                                                    <select name="seat_slot_hour" id="seat_slot_hour"  required=""  title="회차시간 시 설정" style="width: 60px;">
+                                                        <!-- ng-model="slot.hour" ng-init="slot.hour=&#39;12&#39;" -->
+                                                        <option value="0">00</option>
+                                                        <option value="1">01</option>
+                                                        <option value="2">02</option>
+                                                        <option value="3">03</option>
+                                                        <option value="4">04</option>
+                                                        <option value="5">05</option>
+                                                        <option value="6">06</option>
+                                                        <option value="7">07</option>
+                                                        <option value="8">08</option>
+                                                        <option value="9">09</option>
+                                                        <option value="10">10</option>
+                                                        <option value="11">11</option>
+                                                        <option value="12">12</option>
+                                                        <option value="13">13</option>
+                                                        <option value="14">14</option>
+                                                        <option value="15">15</option>
+                                                        <option value="16">16</option>
+                                                        <option value="17">17</option>
+                                                        <option value="18">18</option>
+                                                        <option value="19">19</option>
+                                                        <option value="20">20</option>
+                                                        <option value="21">21</option>
+                                                        <option value="22">22</option>
+                                                        <option value="23">23</option>
+                                                    </select><span>시</span>
+                                                </div>
+                                                <div class="pay_select_wrapper" style="margin-left: 10px;">
+                                                    <select name="seat_slot_minute" id="seat_slot_minute" required="" title="회차시간 분 설정" style="width:60px">
+                                                    <!--  ng-init="slot.minute=&#39;00&#39;"  -->
+                                                        <option value="00">00</option>
+                                                        <option value="05">05</option>
+                                                        <option value="10">10</option>
+                                                        <option value="15">15</option>
+                                                        <option value="20">20</option>
+                                                        <option value="25">25</option>
+                                                        <option value="30">30</option>
+                                                        <option value="35">35</option>
+                                                        <option value="40">40</option>
+                                                        <option value="45">45</option>
+                                                        <option value="50">50</option>
+                                                    </select><span>분</span>
+                                                </div>
+                                            </div>
+
+                                            <!-- 회차명 -->
+                                            <div class="input_wrapper">
+                                                <span>회차명</span>
+                                                <div class="info_input">
+                                                    <input type="text" id="seat_slot_name" name="seat_slot_name" placeholder="회차명을 입력해 주세요."
+                                                        minlength="3" maxlength="17" class="limit"/>
+                                                        <!-- ng-model="slot.name"  ng-init="tmp.model3=&#39;예약상품명&#39;"  -->
+                                                        <span><span class="char_num">0</span>자<span class="limit_cnt">  / 17자(최소 3자)</span></span>
+                                                    <!-- 
+                                                    <small class="text-danger ng-binding ng-hide"
+                                                        ng-show="form.seatSlotRepetition.seat_slot_name.$error.pattern">
+                                                        회차명은 한글,영문,숫자,특수문자(-_():&amp;![].,%+~@*^'/?²℃※&lt;&gt;)만 입력가능합니다.</small>
+                                                    <small class="text-danger ng-hide"
+                                                        ng-show="form.seatSlotRepetition.seat_slot_name.$error.minlength || form.seatSlotRepetition.seat_slot_name.$error.maxlength">
+                                                        회차명은 최소 3자부터 최대 17자까지 입력 가능합니다.</small>
+                                                    -->
+                                                </div>
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary" onclick="scheduleCreate()">적용</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="onCloseBtnClick()">취소</button>
+                                            </div>
+                                        </div>
+                                    
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 상품 회차 반복 추가 모달창 END--------------------------------------------->
+
+
+                            <!--상품 회차 반복 삭제 모달창 --------------------------------------------->
+                            <div class="price-modal fade"  id="deleteSeatSlotRepetition"  tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="price-modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">상품 회차 반복 삭제</h4>
+                                        </div>
+                                        <div class="modal-body modal-min-height">
+
+                                            <!-- 기간 --> 
+                                            <div class="input_wrapper">
+                                                <span>기간</span>
+                                                <p>
+                                                    <div class="info_input"><input type="date" ng-model="date"/></div>
+                                                    <span style="text-align:center; text-indent: 0; width: 30px;"> ~ </span>
+                                                    <div class="info_input"><input type="date" ng-model="slot.endDate" /></div>
+                                                </p>
+                                                <!--  
+                                                    <small class="text-danger ng-hide" ng-show="checkDatePicker() &amp;&amp; !isOverRange">기간의 시작일은 종료일 이전 날짜로 선택해야 합니다.</small>
+                                                    <small class="text-danger ng-hide" ng-show="checkDatePicker() &amp;&amp; isOverRange">시작일 ~ 종료일 기간은 최대 1년까지 입력할 수 있습니다.</small>
+                                                -->
+                                            </div>
+                                            
+                                            <!-- 반복 설정 - Select Box --> 
+                                            <div class="input_wrapper">
+                                                <span>반복설정</span>
+
+                                                <div class="pay_select_wrapper" style="margin-right: 10px;">
+                                                    <select style="width: 200px;" onchange="onRepeatDayChange(event)" title="반복 설정">
+                                                <!--  ng-model="slot.repeat"  ng-init="slot.repeat=&#39;0000000&#39;"  -->
+                                                        <option value="0000000">사용자 선택</option>
+                                                        <option value="1111100" ng-repeat="(key, value) in repeatType.sampleList">매주 일 ~ 목요일</option>
+                                                        <option value="1111111" ng-repeat="(key, value) in repeatType.sampleList" >매일</option>
+                                                        <option value="0000010" ng-repeat="(key, value) in repeatType.sampleList" >매주 금요일</option>
+                                                        <option value="0000001" ng-repeat="(key, value) in repeatType.sampleList" >매주 토요일</option>
+                                                    </select>
+                                                    <span>마다 반복 설정</span>
+                                                </div>
+
+                                                
+                                            </div>
+
+                                            <!-- 반복 설정 - 요일  -->
+                                            <div class="input_wrapper">
+                                                <div class="info_input" style="width: 30%; display: flex; align-items: center;margin-left: 150px;">
+                                                    <div class="btn-group" role="group">
+                                                        <button type="button" class="btn btn-sm btn-default ng-binding onRepeatDayBtnClick" 
+                                                        onclick="onRepeatDayBtnClick(event, ($(this).index() + 1) % 7)">월</button>
+                                                    </div>
+                                                    <div class="btn-group" role="group">
+                                                        <button type="button" class="btn btn-sm btn-default ng-binding onRepeatDayBtnClick"
+                                                            onclick="onRepeatDayBtnClick(event, ($(this).index() + 1) % 7)">화</button>
+                                                    </div>
+                                                    <div class="btn-group" role="group">
+                                                        <button type="button" class="btn btn-sm btn-default ng-binding onRepeatDayBtnClick"
+                                                            onclick="onRepeatDayBtnClick(event, ($(this).index() + 1) % 7)">수</button>
+                                                    </div>
+                                                    <div class="btn-group" role="group">
+                                                        <!-- ng-repeat="item in convertStrToArr(slot.validWeekStr) track by $(this).index()" -->
+                                                        <button type="button" class="btn btn-sm btn-default ng-binding onRepeatDayBtnClick"
+                                                            onclick="onRepeatDayBtnClick(event, ($(this).index() + 1) % 7)">목</button>
+                                                    </div>
+                                                    <div class="btn-group" role="group">
+                                                        <button type="button" class="btn btn-sm btn-default ng-binding onRepeatDayBtnClick"
+                                                            onclick="onRepeatDayBtnClick(event, ($(this).index() + 1) % 7)">금</button>
+                                                    </div>
+                                                    <div class="btn-group" role="group">
+                                                        <button type="button" class="btn btn-sm btn-default ng-binding onRepeatDayBtnClick"
+                                                            onclick="onRepeatDayBtnClick(event, ($(this).index() + 1) % 7)">토</button>
+                                                    </div>
+                                                    <div class="btn-group" role="group">
+                                                        <button type="button" class="btn btn-sm btn-default ng-binding onRepeatDayBtnClick"
+                                                            onclick="onRepeatDayBtnClick(event, ($(this).index() + 1) % 7)">일</button>
+                                                    </div>
+                                                    <small class="text-gray" ng-show="slot.validWeekStr === &#39;0000000&#39;"></small>
+                                                </div>
+                                            </div>
+
+                                            <!-- 회차 시간 --> 
+                                            <div class="input_wrapper" style="padding-bottom: 25px; border-bottom: 1px solid #ddd;">
+                                                <span>회차시간</span>
+                                                <div class="pay_select_wrapper">
+                                                    <select name="seat_slot_hour" required="" title="회차시간 시 설정" style="width: 60px;">
+                                                        <!-- ng-model="slot.hour" ng-init="slot.hour=&#39;12&#39;" -->
+                                                        <option value="0">00</option>
+                                                        <option value="1">01</option>
+                                                        <option value="2">02</option>
+                                                        <option value="3">03</option>
+                                                        <option value="4">04</option>
+                                                        <option value="5">05</option>
+                                                        <option value="6">06</option>
+                                                        <option value="7">07</option>
+                                                        <option value="8">08</option>
+                                                        <option value="9">09</option>
+                                                        <option value="10">10</option>
+                                                        <option value="11">11</option>
+                                                        <option value="12">12</option>
+                                                        <option value="13">13</option>
+                                                        <option value="14">14</option>
+                                                        <option value="15">15</option>
+                                                        <option value="16">16</option>
+                                                        <option value="17">17</option>
+                                                        <option value="18">18</option>
+                                                        <option value="19">19</option>
+                                                        <option value="20">20</option>
+                                                        <option value="21">21</option>
+                                                        <option value="22">22</option>
+                                                        <option value="23">23</option>
+                                                    </select><span>시</span>
+                                                </div>
+                                                <div class="pay_select_wrapper" style="margin-left: 10px;justify-content: flex-start;width: 60%;" >
+                                                    <select name="seat_slot_minute" required="" title="회차시간 분 설정"  style="width:60px">
+                                                        <!-- ng-model="slot.minute" ng-init="slot.minute=&#39;00&#39;"  -->
+                                                        <option value="00">00</option>
+                                                        <option value="05">05</option>
+                                                        <option value="10">10</option>
+                                                        <option value="15">15</option>
+                                                        <option value="20">20</option>
+                                                        <option value="25">25</option>
+                                                        <option value="30">30</option>
+                                                        <option value="35">35</option>
+                                                        <option value="40">40</option>
+                                                        <option value="45">45</option>
+                                                        <option value="50">50</option>
+                                                    </select><span>분</span>
+                                                </div>
+
+                                                <button type="button" class="btn btn-default" >조회</button>
+                                            </div>
+
+                                            <!-- 조회후 회차가 없을시  -->
+                                            <p class="mb20"><strong>* 판매된 회차는 삭제할 수 없어 조회대상에서 제외합니다.</strong></p>
+                                            <div class="form-group mt30 mb10" ng-show="slotList.length === 0">
+                                                <span class="col-sm-2">회차일시</span> 
+                                                <span class="col-sm-10 text-gray" ng-class="{&#39;text-gray&#39;: slotList.length === 0}" >조회된 회차가 없습니다.</span>
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary" onclick="scheduleDelete()" disabled="disabled">삭제</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="onCloseBtnClick()">취소</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 상품 회차 반복 삭제 모달창 --------------------------------------------->
+
+
+                            <!--상품 회차 조회 모달창 --------------------------------------------->
+                            <div class="price-modal fade"  id="Repetition"  tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="price-modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">상품 회차 정보</h4>
+                                        </div>
+
+                                        <div class="modal-body modal-min-height">
+
+                                            <ng-form name="form.seatSlot" class="form-horizontal ng-pristine ng-valid ng-valid-pattern ng-valid-minlength ng-valid-maxlength" role="form" >
+                                                <!-- 회차일조회 -->
+                                                <div class="input_wrapper">
+                                                    <span>회차일</span> 
+                                                    <span class="col-sm-10">
+                                                        <strong ng-bind="getDate(slot.validStartDate)" class="ng-binding"></strong>
+                                                    </span>
+                                                </div>
+                                                <!-- 회차시간조회 -->
+                                                <div class="input_wrapper">
+                                                    <span >회차시간</span> 
+                                                    <span class="col-sm-10">
+                                                        <strong ng-bind="getTime(slot.cond1Val)" class="ng-binding"></strong>
+                                                    </span>
+                                                </div>
+                                                <!-- 회차명조회 -->
+                                                <div class="input_wrapper">
+                                                    <span>회차명</span>
+                                                    <div class="info_input">
+                                                        <input type="text" id="seat_slot_name" name="seat_slot_name" placeholder="회차명을 입력해 주세요."
+                                                            minlength="3" maxlength="17" class="limit"/>
+                                                            <span><span class="char_num">0</span>자<span class="limit_cnt">  / 17자(최소 3자)</span></span>
+                                                        </div>
+                                                </div>
+
+                                                <hr>
+                                            
+                                                <p class="mb30"><strong>해당 회차에 설정된 정보 요약입니다. 회차정보 탭에서 관리할 수 있습니다.</strong></p>
+
+                                                <!-- 회차정보조회 -->
+                                                <div class="input_wrapper input_wrapper_2 mb20">
+                                                    <span >회차정보</span>
+                                                    <p>
+                                                        <span class="col-sm-10 text-gray" ng-class="{&#39;text-gray&#39;: slotList.length === 0}" style="font-size: 16px; line-height: 2;">설정된 회차정보가 없습니다.</span>
+                                                    </p>
+                                                </div>
+
+                                                <!-- 가격정보조회 -->
+                                                <div class="input_wrapper mb20" ng-show="!(slot.resocPriceRels === null || slot.resocPriceRels === undefined)" >
+                                                    <span >가격정보</span>
+                                                    <div class="col-sm-10">
+                                                        <div class="table-wrap table-row-5 table-opacity">
+                                                            <div class="table-box">
+                                                                <table class="table table-nomargin">
+                                                                    <caption>가격정보 테이블</caption>
+                                                                    <colgroup>
+                                                                        <col style="width:68%">
+                                                                        <col>
+                                                                    </colgroup>
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th scope="col" class="center-align vert-align">
+                                                                                <div class="th-txt" style="width:68%">가격분류</div>
+                                                                            </th>
+                                                                            <th scope="col" class="center-align vert-align">
+                                                                                <div class="th-txt" style="width:32%">가격(원)</div>
+                                                                            </th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr ng-repeat="item in slot.resocPriceRels" class="ng-scope" >
+                                                                            <!-- 가격분류명 --> 
+                                                                            <td class="vert-align pl20 ng-binding" ng-bind="item.priceName"></td>
+                                                                            <!-- 가격 -->
+                                                                            <td class="text-right vert-align word-break pr20 ng-binding" ng-bind="item.fixPrice"></td>
+                                                                        </tr>
+                                                                        <tr ng-repeat="item in slot.resocPriceRels" class="ng-scope">
+                                                                            <!-- 가격분류명 -->
+                                                                            <td class="vert-align pl20 ng-binding" ng-bind="item.priceName"></td>
+                                                                            <!-- 가격 -->
+                                                                            <td class="text-right vert-align word-break pr20 ng-binding" ng-bind="item.fixPrice"></td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- 가격정보없을때 -->
+                                                <div class="input_wrapper mb20 ng-hide" ng-show="slot.resocPriceRels === null || slot.resocPriceRels === undefined" style="display: none;">
+                                                    <span class="col-sm-2">가격정보</span>
+                                                    <p>
+                                                        <span class="col-sm-10" ng-class="{'text-gray': slot.resocPriceRels === null || slot.resocPriceRels === undefined }" 
+                                                        style="font-size: 16px; line-height: 2;">설정된 가격정보가 없습니다.</span>
+                                                    </p>
+                                                </div>
+                                        
+                                                <!-- 재고정보없을때 -->
+                                                <div class="input_wrapper mb0 ng-hide" ng-show="slot.seatSlot !== undefined &amp;&amp; !checkSlotStock(slot)" style="display: none;">
+                                                    <span>재고정보</span>
+                                                    <span class="col-sm-10" ng-class="{ 'text-gray': slot.seatSlot !== undefined &amp;&amp; !checkSlotStock(slot) }"style="font-size: 16px; line-height: 2;">설정된 재고가 없습니다.</span>
+                                                </div>
+                                                <!-- 재고정보조회 -->
+                                                <div class="input_wrapper mb0" ng-show="slot.seatSlot === undefined">
+                                                    <span >재고수</span> <span class="col-sm-10 ng-binding bold" ng-bind="(slot.resocCnt === -1) ? '설정된 재고가 없습니다.' : slot.resocCnt" ng-class="{'bold': slot.resocCnt > -1, 'text-gray': slot.resocCnt === -1 }" ></span>
+                                                </div>
+                                            </ng-form>
+                                        
+                                            <hr>
+
+                                            <div class="modal-footer">
+                                                <button type="button"class="btn btn-default" onclick="onCloseBtnClick()" style="margin-right: 5px;">취소</button>
+                                                <button type="button"class="btn btn-primary"  onclick="scheduleDelete()">삭제</button> 
+                                                <button type="button" class="btn btn-info" ng-click="onModifyBtnClick($event)" ng-disabled="!form.seatSlot.$valid">수정</button>
+                                            </div>
+                                        
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 상품 회차 조회 모달창 --------------------------------------------->
+                
+                        </div>
+          
+                    </div>
+                  
+                </div>
+
+            </div>
+
+        </section>
+
+        {% include './inc/footer.html' %}
+
+    </section>
+       
+     <!-- Page Loader -->
+     <div class="page-loader palette-Teal bg">
+        <div class="preloader pl-xl pls-white">
+           <!--  <svg class="pl-circular" viewBox="25 25 50 50">
+                <circle class="plc-path" cx="50" cy="50" r="20"/>
+            </svg> -->
+        </div>
+    </div>
+
+
+<link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" /> 
+<!-- Javascript Libraries -->
+<script src="../../static/vendors/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="../../static/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<script src="{{ url_for('static', filename='vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js') }}" > </script>
+<script src="{{ url_for('static', filename='vendors/bower_components/Waves/dist/waves.min.js') }}" > </script>
+<script src="{{ url_for('static', filename='vendors/bootstrap-growl/bootstrap-growl.min.js') }}" > </script>
+
+<!-- Placeholder for IE9 -->
+<!--[if IE 9 ]>
+    <script src="vendors/bower_components/jquery-placeholder/jquery.placeholder.min.js"></script>
+<![endif]-->
+
+<script>
+/* 반복추가 모달창 수정중입니다 alert 창 표출 */
+function addbtn() {
+    alert('수정중입니다');
+}
+function delbtn(){
+    alert('수정중입니다');
+}
+
+</script>
+
+<script src="{{ url_for('static', filename='js/common/functions.js') }}" > </script>
+<script src="{{ url_for('static', filename='js/common/actions.js') }}" > </script>
+<script src="{{ url_for('static', filename='js/common/demo.js') }}" > </script>
+<script src="{{ url_for('static', filename='js/common/insert.js') }}" > </script>
+
+
+<script src="{{ url_for('static', filename='js/product/api_price.js') }}" > </script>
+<script src="{{ url_for('static', filename='js/product/api_schedule.js') }}" > </script>
+<script src="{{ url_for('static', filename='js/product/validation.js') }}" > </script>
+<script src="{{ url_for('static', filename='js/product/price_calender.js') }}" > </script>
+<script src="{{ url_for('static', filename='js/business/api_businesses_naver.js') }}" > </script>
+
+
+<script src="{{ url_for('static', filename='js/common/common_include.js') }}" > </script>
+<script src="{{ url_for('static', filename='js/common/login_check.js') }}" > </script>
+
+<script src="https://kit.fontawesome.com/70c929d7d4.js" crossorigin="anonymous"></script>
+<link href="{{ url_for('static', filename='css/common/plugins/jQuery/jquery-3.6.0.min.js') }}" rel="stylesheet">
+<script src="http://code.jquery.com/jquery-latest.js "></script>
+<link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" /> 
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script> 
+<script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
+
+    
+</body>
+</html>
+
+<!-- Older IE warning message -->
+        <!--[if lt IE 9]>
+            <div class="ie-warning">
+                <h1 class="c-white">Warning!!</h1>
+                <p>You are using an outdated version of Internet Explorer, please upgrade <br/>to any of the following web browsers to access this website.</p>
+                <div class="iew-container">
+                    <ul class="iew-download">
+                        <li>
+                            <a href="http://www.google.com/chrome/">
+                                <img src="img/browsers/chrome.png" alt="">
+                                <div>Chrome</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.mozilla.org/en-US/firefox/new/">
+                                <img src="img/browsers/firefox.png" alt="">
+                                <div>Firefox</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://www.opera.com">
+                                <img src="img/browsers/opera.png" alt="">
+                                <div>Opera</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.apple.com/safari/">
+                                <img src="img/browsers/safari.png" alt="">
+                                <div>Safari</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">
+                                <img src="img/browsers/ie.png" alt="">
+                                <div>IE (New)</div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <p>Sorry for the inconvenience!</p>
+            </div>   
+        <![endif]-->
+    

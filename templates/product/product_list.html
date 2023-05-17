@@ -1,0 +1,157 @@
+<!--#include virtual = "/inc/dbconfig.asp"--> 
+<!DOCTYPE html>
+<!--[if IE 9 ]><html class="ie9"><![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="Cache-Contorl" content="no-cache, no-store, must-revalidate">
+        <meta http-equiv="Pragma" content="no-cache">
+        <meta http-equiv="Expires" content="0">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>해마여행사</title>
+
+        <!-- Vendor CSS -->
+        <link href="{{ url_for('static', filename='vendors/bower_components/animate.css/animate.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='vendors/bower_components/google-material-color/dist/palette.css') }}" rel="stylesheet">
+           
+        <!-- CSS -->
+        <link href="{{ url_for('static', filename='css/app.min.1.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='css/app.min.2.css') }}" rel="stylesheet">
+        
+
+        <link href="{{ url_for('static', filename='css/common/css/reset.css') }}" rel="stylesheet"> 
+        <link href="{{ url_for('static', filename='css/common/css/fonts.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+        
+        <link href="{{ url_for('static', filename='css/insert.css') }}" rel="stylesheet">
+
+        <script src="{{ url_for('static', filename='css/common/plugins/jQuery/jquery-3.6.0.min.js') }}" > </script>
+
+    </head>
+
+    <body data-ma-header="teal">
+        {% include './inc/header.html' %}
+        
+        <section id="main">
+            {% include './inc/aside.html' %}
+            <section id="content">
+                <div class="container">
+
+                    <div class="card">
+
+                        <div class="c-header" style="padding: 20px;">
+                            <h2 style="color: #333;">※ <span style="color: red;">관리자페이지</span>에서 동록한 상품을 조회합니다.</h2>
+                        </div> 
+                        
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: center;">번호</th>
+                                        <th style="text-align: center;">업체명</th>
+                                        <th style="text-align: center; ">상품명</th>
+                                        <th style="text-align: center; ">상품기간</th>
+                                        <th style="text-align: center; ">상품시간</th>
+                                        <th style="text-align: center; ">대인</th>
+                                        <th style="text-align: center; ">소인</th>
+                                        <th style="text-align: center; ">유아</th>
+                                        <th style="text-align: center; ">재고</th>
+                                        <th style="text-align: center;">수정/삭제</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div> 
+                </div>
+            </section>
+
+            {% include './inc/footer.html' %}
+        </section>
+
+        <!-- Page Loader -->
+        <div class="page-loader palette-Teal bg">
+            <div class="preloader pl-xl pls-white">
+             <!--    <svg class="pl-circular" viewBox="25 25 50 50">
+                    <circle class="plc-path" cx="50" cy="50" r="20"/>
+                </svg> -->
+            </div>
+        </div>
+
+     
+        
+        
+        <!-- Javascript Libraries -->
+        <script src="{{ url_for('static', filename='vendors/bower_components/jquery/dist/jquery.min.js') }}" > </script>        <script src="../../static/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        
+        <script src="{{ url_for('static', filename='vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js') }}" > </script>
+        <script src="{{ url_for('static', filename='vendors/bower_components/Waves/dist/waves.min.js') }}" > </script>
+        <script src="{{ url_for('static', filename='vendors/bootstrap-growl/bootstrap-growl.min.js') }}" > </script>
+
+        <!-- Placeholder for IE9 -->
+        <!--[if IE 9 ]>
+            <script src="vendors/bower_components/jquery-placeholder/jquery.placeholder.min.js"></script>
+        <![endif]-->
+        <script src="{{ url_for('static', filename='js/common/functions.js') }}" > </script>
+        <script src="{{ url_for('static', filename='js/common/actions.js') }}" > </script>
+        <script src="{{ url_for('static', filename='js/common/demo.js') }}" > </script>
+        <script src="{{ url_for('static', filename='js/common/common_include.js') }}" > </script>
+
+        
+        <script src="https://kit.fontawesome.com/70c929d7d4.js" crossorigin="anonymous"></script>
+        <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" /> 
+        <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script> 
+    
+        <!-- <script src="js/api_biz.js"></script> -->
+        <script src="{{ url_for('static', filename='js/business/biz_insert_tool.js') }}" > </script>
+        <script src="{{ url_for('static', filename='js/business/api_businesses.js') }}" > </script>
+        <script src="{{ url_for('static', filename='js/common/login_check.js') }}" > </script>
+        <script src="{{ url_for('static', filename='js/product/product_list.js') }}" > </script>
+
+       
+    </body>
+  </html>
+     <!-- Older IE warning message -->
+        <!--[if lt IE 9]>
+            <div class="ie-warning">
+                <h1 class="c-white">Warning!!</h1>
+                <p>You are using an outdated version of Internet Explorer, please upgrade <br/>to any of the following web browsers to access this website.</p>
+                <div class="iew-container">
+                    <ul class="iew-download">
+                        <li>
+                            <a href="http://www.google.com/chrome/">
+                                <img src="img/browsers/chrome.png" alt="">
+                                <div>Chrome</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.mozilla.org/en-US/firefox/new/">
+                                <img src="img/browsers/firefox.png" alt="">
+                                <div>Firefox</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://www.opera.com">
+                                <img src="img/browsers/opera.png" alt="">
+                                <div>Opera</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.apple.com/safari/">
+                                <img src="img/browsers/safari.png" alt="">
+                                <div>Safari</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">
+                                <img src="img/browsers/ie.png" alt="">
+                                <div>IE (New)</div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <p>Sorry for the inconvenience!</p>
+            </div>   
+        <![endif]-->
