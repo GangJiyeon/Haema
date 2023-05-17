@@ -6,9 +6,9 @@
 
     {% for i in range(pgn) %}	 
         {% if i+1 == page_no|int %}
-            <a href="/member?page_no={{ i+1 }}">{{ i+1 }}</a>
+            <a href="{{ info }}?page_no={{ i+1 }}">{{ i+1 }}</a>
         {% else %}
-            <a href="/member?page_no={{ i+1 }}" style="color: #333;">{{ i+1 }}</a>
+            <a href="{{ info }}?page_no={{ i+1 }}" style="color: #333;">{{ i+1 }}</a>
         {% endif %}
     {% endfor %}
 
