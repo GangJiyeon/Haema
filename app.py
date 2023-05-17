@@ -74,7 +74,7 @@ def view_member():
 
     count = 10
 
-    if(page_no == 1):
+    if(page_no == pgn):
         count = total % 10 
 
     # 사용자 리스트
@@ -170,7 +170,7 @@ def view_biz_list():
 
     count = 10
 
-    if(page_no == 1):
+    if(page_no == pgn):
         count = total % 10 
 
     biz_list = biz.select_biz_list_10(int(page_no), count)
