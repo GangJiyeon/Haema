@@ -273,8 +273,24 @@ def biz_delete():
 # 상품목록 페이지
 @app.route("/product/list")
 def view_product_list():
-    product_list = product.select_product_list()
-    return render_template('product/product_list.html', product_list = product_list)
+
+    total = product.count_project_list()
+
+    pgn = (total-1)//10 + 1 
+    if(request.args.get('page_no') == None):
+        page_no = 1
+    else:
+        page_no = int(request.args.get('page_no'))
+
+    count = 10
+
+    if(page_no == pgn):
+        count = total % 10 
+
+    product_list = product.select_product_list(int(page_no), count)
+
+    return render_template('product/product_list.html',pgn = pgn, product_list = product_list, page_no = page_no, info = "/product/list")
+
 
 # 네이버 상품목록 페이지
 @app.route("/product/naver/list")

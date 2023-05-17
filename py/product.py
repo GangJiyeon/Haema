@@ -42,7 +42,7 @@ def product_insert(businessCode, bizItemName,impStartDateTimeStart,impStartDateT
     return jsonify(res)
 
 # 상품 정보 조회
-def select_product_list():
+def select_product_list(page_no, count):
     
     query = '''SELECT T.id as id, 
             T.businessCode AS businessCode, 
@@ -74,12 +74,14 @@ def select_product_list():
             GROUP BY b.id,  b.businesscode, b.bizitemname, b.impstartdatetimestart,  b.impstartdatetimeend, t.biz_name, b.regdate
             ) T
             LEFT JOIN BIZ_ITEM_DETAIL bid ON T.minId = bid.id
-            ORDER BY T.id desc;'''
+            ORDER BY T.id desc
+            OFFSET %s
+            ROWS FETCH NEXT %s ROWS ONLY;'''
     
 
     conn = dbconnect()
     cursor = conn.cursor()
-    cursor.execute(query, ("1"))
+    cursor.execute(query, (page_no-1, count))
     array = []
     row = cursor.fetchone()
 
@@ -113,5 +115,4 @@ def select_product_list():
 
 
 
-    return jsonify(res)
-
+    return res
