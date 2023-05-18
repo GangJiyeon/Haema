@@ -6,7 +6,7 @@ $(document).ready(function() {
         alert("잘못된 경로로 들어오셨습니다.");
     }
     $.ajax({
-        url : "/v1/product?id=" + id,
+        url : "/v1/product/item?id=" + id,
         type : "GET",
         success : function(res) {
             let item = res[0];

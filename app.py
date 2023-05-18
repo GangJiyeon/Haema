@@ -307,13 +307,26 @@ def view_product_insert():
 def view_product_naver_insert():
     return render_template('product/product_naver_insert.html')
 
+# 상품수정 페이지
+@app.route("/product/update")
+def view_product_update():
+    id = request.args.get('id')
+    return render_template('product/product_update.html', id = id)
+
+
+
 # 상품 조회
 @app.route("/v1/product/list")
 def select_product_list():
     res = product.select_product_list()
     return res
 
-
+# [상품 단건 조회]
+@app.route("/v1/product/item")
+def select_product_item():
+    id = request.args.get('id')
+    res = product.select_product_item(id)
+    return res
 
 
 if __name__ == "__main__":

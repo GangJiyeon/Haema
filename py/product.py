@@ -116,3 +116,86 @@ def select_product_list(page_no, count):
 
 
     return res
+
+
+# 상품 단건 조회
+def select_product_item(id):
+    
+    query = '''SELECT  b.id,
+                b.businessCode,
+                b.bizItemName,
+                CONVERT(CHAR(10), b.impstartdatetimestart, 23) AS impStartDateTimeStart,
+                CONVERT(CHAR(10), b.impstartdatetimeend, 23)   AS impStartDateTimeEnd,
+                t.biz_name                                    AS businessName,
+                bid.id AS bidId,
+                bid.time AS time,
+                bid.adultPriceName AS adultPriceName,
+                bid.adultNormalPrice AS adultNormalPrice,
+                bid.adultPrice AS adultPrice,
+                bid.childPriceName AS childPriceName,
+                bid.childNormalPrice AS childNormalPrice,
+                bid.childPrice AS childPrice,
+                bid.toddlerPriceName AS toddlerPriceName,
+                bid.toddlerNormalPrice AS toddlerNormalPrice,
+                bid.toddlerPrice AS toddlerPrice,
+                bid.stock AS stock
+                FROM BIZ_ITEM b
+                JOIN biz_list t ON b.businesscode = t.biz_code
+                JOIN BIZ_ITEM_DETAIL bid ON b.id = bid.bizItemId
+                WHERE b.id = %d
+                ORDER BY b.id ASC'''
+    
+
+    conn = dbconnect()
+    cursor = conn.cursor()
+
+    cursor.execute(query, (int(id)))
+    array = []
+    row = cursor.fetchone()
+
+
+  
+    if(row == None):
+        res = "null"
+    else:
+        while row:
+            id = row[0]
+            businessName = row[5].encode('ISO-8859-1').decode('euc-kr')
+            bizItemName = row[2].encode('ISO-8859-1').decode('euc-kr')
+            impStartDateTimeStart = row[3].encode('ISO-8859-1').decode('euc-kr')
+            impStartDateTimeEnd = row[4].encode('ISO-8859-1').decode('euc-kr')
+            time = row[7].encode('ISO-8859-1').decode('euc-kr')
+
+            adultPriceName = row[8].encode('ISO-8859-1').decode('euc-kr')
+            adultNormalPrice = row[9]
+            adultPrice = row[10]
+
+            childPriceName = row[11].encode('ISO-8859-1').decode('euc-kr')
+            childNormalPrice = row[12]
+            childPrice = row[13]
+
+            toddlerPriceName = row[14].encode('ISO-8859-1').decode('euc-kr')
+            toddlerNormalPrice = row[15]
+            toddlerPrice = row[16]
+
+            stock = row[17]
+
+            array_item = {"id":id,
+                          "businessName":businessName, 
+                          "bizItemName":bizItemName, "impStartDateTimeStart": impStartDateTimeStart, "impStartDateTimeEnd":impStartDateTimeEnd, "time":time, 
+                          "adultPriceName":adultPriceName, "adultPrice":adultPrice, "adultNormalPrice":adultNormalPrice,
+                          "childPriceName":childPriceName, "childPrice":childPrice, "childNormalPrice":childNormalPrice,
+                          "toddlerPriceName":toddlerPriceName, "toddlerNormalPrice":toddlerNormalPrice, "toddlerPrice":toddlerPrice, 
+                          "stock":stock}
+            print(array_item)
+            array.append(array_item)
+            
+            row = cursor.fetchone()
+        res = array
+        
+    conn.close()
+
+
+
+    return jsonify(res)
+
