@@ -3,14 +3,14 @@ $(document).ready(function() {
     // 1. 데이터를 불러온다.
     // 2. option 태그 만들어서 append한다.
     $.ajax({
-        url : "/api/v1/biz_list",
+        url : "/v1/biz/list",
         type : "GET",
         success : function(data) {
             // 여기서 option 태그 만들어서 append한다.
             let htmlTemplate = '';
             for(let i = 0; i < data.length; i++) {
                 let biz = data[i];
-                htmlTemplate += `<option value="${biz.업체코드}">${biz.업체명}</option>`;
+                htmlTemplate += `<option value="${biz.biz_code}">${biz.biz_name}</option>`;
             }
 
             $("#businessCode").append(htmlTemplate);
@@ -36,8 +36,8 @@ $(document).ready(function() {
         
 
         $.ajax({
-            url : "/api/v1/product_insert",
-            type : "POST",
+            url : "/v1/product/insert",
+            type : "GET",
             data : {
                 businessCode : businessCode,
                 bizItemName : bizItemName,
@@ -47,7 +47,7 @@ $(document).ready(function() {
                },
             success : function(res) {
                 alert("등록되었습니다.");
-                window.location.href = '/product_list';
+                window.location.href = '/product/list';
             },
             error : function(err) {
                 console.log(err);
