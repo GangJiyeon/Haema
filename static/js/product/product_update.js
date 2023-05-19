@@ -41,15 +41,16 @@ $(document).ready(function() {
             return;
         }
 
-        let param = makeDetail();
+        let param = JSON.stringify(makeDetail());
         let id = $("#id").val();
         let bizItemName = $("#bizItemName").val();
         let impStartDateTimeStart = $("#impStartDateTimeStart").val();
         let impStartDateTimeEnd = $("#impStartDateTimeEnd").val();
         
+        console.log(id);
         $.ajax({
-            url : "/v1/product",
-            type : "PUT",
+            url : "/v1/product/update",
+            type : "GET",
             data : {
                 id : id,
                 bizItemName : bizItemName,
@@ -59,7 +60,7 @@ $(document).ready(function() {
             },
             success : function (res) {
                 alert("수정이 완료되었습니다.");
-                window.location.href = '/product_list';
+                window.location.href = '/product/list';
             },
             error : function (err) {
                 alert("수정에 실패했습니다.");
@@ -79,6 +80,7 @@ $(document).ready(function() {
        }
    }
 
+   //상세 설정 추가
    $(document).on('click', '.product_report_btn button', function () {
 
        let temp = `
@@ -159,6 +161,7 @@ $(document).ready(function() {
 
 });
 
+//입력 값 확인
 const paramValidCheck = () => {
    
     let bizItemName = $("#bizItemName").val();
@@ -233,7 +236,7 @@ const paramValidCheck = () => {
 }
 
 
-
+//상품 상세 정보 => param
 const makeDetail = () => {
     let length = $("input[name='time[]']").length;
     let param = [];
@@ -274,6 +277,7 @@ const makeDetail = () => {
 
 }
 
+//상품 상세 정보 보여주기
 const gridDetailConfig = (idx, item) => {
     $($("input[name='bidId[]']")[idx]).val(item.bidId);
     $($("input[name='time[]']")[idx]).val(item.time);

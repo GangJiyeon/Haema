@@ -1,3 +1,4 @@
+import json
 from flask import jsonify, session
 from py.db import config
 
@@ -199,3 +200,86 @@ def select_product_item(id):
 
     return jsonify(res)
 
+# 상품 정보 수정
+def update_product_item(id, bizItemName, impStartDateTimeStart, impStartDateTimeEnd, param):
+    
+    query ='''UPDATE BIZ_ITEM 
+                SET bizItemName=%s, 
+                impStartDateTimeStart=%s, 
+                impStartDateTimeEnd=%s  
+                WHERE id=%d;
+            '''
+    
+    conn = dbconnect()
+    cursor = conn.cursor()
+    cursor.execute(query, (bizItemName, impStartDateTimeStart, impStartDateTimeEnd, int(id)))
+    conn.commit()
+    conn.close()
+
+# 상품 세부 정보 수정
+def update_product_detail(param):
+    param = json.loads(param)
+
+    for i in range(len(param)):
+        time = param[i]['time']
+
+        adultPriceName = param[i]['adultPriceName']
+        adultNormalPrice = param[i]['adultNormalPrice']
+        adultPrice = param[i]['adultPrice']
+
+        childPriceName = param[i]['childPriceName']
+        childNormalPrice = param[i]['adultNormalPrice']
+        childPrice = param[i]['childPrice']
+
+        toddlerPriceName = param[i]['toddlerPriceName']
+        toddlerNormalPrice = param[i]['toddlerNormalPrice']
+        toddlerPrice = param[i]['toddlerPrice']
+        stock = param[i]['stock']
+        id = param[i]['bid']
+
+        print(adultPriceName)
+        print(id)
+
+        query ='''UPDATE BIZ_ITEM_DETAIL
+                    SET time = %s, 
+                    adultPriceName = %s, 
+                    adultNormalPrice = %d, 
+                    adultPrice = %d, 
+                    childPriceName = %s, 
+                    childNormalPrice = %d, 
+                    childPrice = %d, 
+                    toddlerPriceName = %s, 
+                    toddlerNormalPrice = %d, 
+                    toddlerPrice = %d, 
+                    stock = %d
+                    WHERE id = %d
+                '''
+        
+        conn = dbconnect()
+        cursor = conn.cursor()
+        cursor.execute(query, (time, adultPriceName, adultNormalPrice, adultPrice, childPriceName, childNormalPrice, childPrice, toddlerPriceName, childPrice, toddlerNormalPrice, toddlerPrice, stock, id))
+        conn.commit()
+        conn.close()
+
+# 상품 삭제
+def delete_product(id):
+
+    conn = dbconnect()
+    cursor = conn.cursor()
+
+    query = '''DELETE 
+                FROM BIZ_ITEM
+                WHERE id = %d'''
+    cursor.execute(query, (id))
+    conn.commit()
+    conn.close()
+
+    conn = dbconnect()
+    cursor = conn.cursor()
+
+    query = '''DELETE 
+                FROM BIZ_ITEM_DETAIL
+                WHERE bizItemId = %d'''
+    cursor.execute(query, (id))
+    conn.commit()
+    conn.close()

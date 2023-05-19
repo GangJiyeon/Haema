@@ -313,8 +313,6 @@ def view_product_update():
     id = request.args.get('id')
     return render_template('product/product_update.html', id = id)
 
-
-
 # 상품 조회
 @app.route("/v1/product/list")
 def select_product_list():
@@ -325,6 +323,32 @@ def select_product_list():
 @app.route("/v1/product/item")
 def select_product_item():
     id = request.args.get('id')
+    res = product.select_product_item(id)
+    return res
+
+# [상품 수정]
+@app.route("/v1/product/update", methods=['GET'])
+def update_product_item():
+
+    id = request.args.get('id')
+    bizItemName = request.args.get('bizItemName')
+    impStartDateTimeStart = request.args.get('impStartDateTimeStart')
+    impStartDateTimeEnd = request.args.get('impStartDateTimeEnd')
+    param = request.args.get('param')
+
+    #params = request.get_json()
+    #param = params['param']
+
+    product.update_product_item(id, bizItemName, impStartDateTimeStart, impStartDateTimeEnd, param)
+    product.update_product_item(param)
+    res = product.select_product_item(id)
+    return res
+
+# [상품 삭제]
+@app.route("/v1/product/delete")
+def delete_project():
+    id = request.args.get('id')
+    product.delete_product(id)
     res = product.select_product_item(id)
     return res
 

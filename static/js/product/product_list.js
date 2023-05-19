@@ -1,5 +1,7 @@
 $(document).ready(function() {
-    getProductListData();
+    //getProductListData();
+    product_list_js.bind();
+
 });
 
 let product_list_js = {
@@ -15,15 +17,15 @@ let product_list_js = {
         $(".update-bizItem-btn").off().on("click", function() {
             let id = $(this).data("id");
             
-            window.location.href="/product_update?id=" + id;
+            window.location.href="/product/update?id=" + id;
         });
     }
 }
 
 const deleteBizItemData = (id) => {
     $.ajax({
-        url : "/v1/product",
-        type : "DELETE",
+        url : "/v1/product/delete",
+        type : "GET",
         data : {"id" : id},
         success : function (res) {
             alert("삭제 성공했습니다.");
