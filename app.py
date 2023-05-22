@@ -339,8 +339,8 @@ def update_product_item():
     #params = request.get_json()
     #param = params['param']
 
-    product.update_product_item(id, bizItemName, impStartDateTimeStart, impStartDateTimeEnd, param)
-    product.update_product_item(param)
+    product.update_product_item(id, bizItemName, impStartDateTimeStart, impStartDateTimeEnd)
+    product.update_product_detail(param)
     res = product.select_product_item(id)
     return res
 
